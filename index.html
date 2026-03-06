@@ -14,6 +14,7 @@
     
     <style>
         :root {
+            /* MODO OSCURO (Default) */
             --bg: #050505;
             --card-bg: #111111;
             --text-main: #ffffff;
@@ -21,6 +22,22 @@
             --accent: #ffffff;
             --border: #333333;
             --terminal-green: #33ff00;
+            --btn-bg: #ffffff;
+            --btn-text: #050505;
+            --status-color: #10b981; /* Verde online */
+        }
+
+        /* CLASE MODO CLARO */
+        body.light-mode {
+            --bg: #f4f4f4;
+            --card-bg: #ffffff;
+            --text-main: #111111;
+            --text-dim: #555555;
+            --accent: #000000;
+            --border: #dddddd;
+            --terminal-green: #008800;
+            --btn-bg: #111111;
+            --btn-text: #ffffff;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -31,6 +48,7 @@
             color: var(--text-main);
             overflow-x: hidden;
             line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
         /* ANIMACIÓN BARRIDO NOMBRE */
@@ -51,12 +69,49 @@
             -webkit-text-fill-color: transparent;
             animation: scan 4s linear infinite;
         }
+        
+        body.light-mode .scan-text {
+             background: linear-gradient(90deg, 
+                rgba(0,0,0,0.1) 0%, 
+                rgba(0,0,0,1) 50%, 
+                rgba(0,0,0,0.1) 100%);
+             background-size: 200% auto;
+             color: rgba(0,0,0,0.1);
+             background-clip: text;
+             -webkit-background-clip: text;
+             -webkit-text-fill-color: transparent;
+        }
+
+        /* BOTÓN TOGGLE MODE */
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            z-index: 1000;
+        }
+        .theme-toggle:hover {
+            background: var(--card-bg);
+            transform: rotate(15deg);
+        }
 
         /* HEADER */
         header {
             height: 15vh;
-            background-color: #000;
+            background-color: var(--bg);
             border-bottom: 1px solid var(--border);
+            transition: background-color 0.3s ease;
         }
 
         .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
@@ -73,28 +128,55 @@
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            border: 2px solid var(--border);
+            border: 2px solid var(--text-main); /* He puesto el borde blanco para que se vea si o si */
             object-fit: cover;
-            /* ⚠️ IMPORTANTE: Pon tu foto llamada perfil.jpg en la carpeta */
-            background-image: 'perfil.png'; 
+            background-image: url('./perfil.png'); /* <-- CORREGIDO */
             background-size: cover;
             background-position: center;
         }
 
         h1 { font-size: 3.5rem; letter-spacing: -2px; line-height: 1; margin-bottom: 0.5rem; }
         
-        .role-container { height: 1.5rem; margin-bottom: 1rem; color: var(--text-dim); font-size: 1.1rem; }
+        .role-container { height: 1.5rem; margin-bottom: 0.5rem; color: var(--text-dim); font-size: 1.1rem; }
         .typing-text::after { content: '|'; animation: blink 1s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* NUEVA IDEA: PILL DE ESTADO */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 12px;
+            border-radius: 20px;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--status-color);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            margin-bottom: 1rem;
+        }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--status-color);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
 
         /* BOTÓN CV */
         .btn-cv {
             display: inline-flex; align-items: center; gap: 10px;
-            background-color: var(--text-main); color: var(--bg);
+            background-color: var(--btn-bg); color: var(--btn-text);
             padding: 10px 20px; text-decoration: none; font-weight: 700;
             border-radius: 4px; transition: 0.3s; margin-bottom: 3rem;
+            border: 1px solid var(--border);
         }
-        .btn-cv:hover { background-color: #cccccc; transform: translateY(-2px); }
+        .btn-cv:hover { opacity: 0.8; transform: translateY(-2px); }
 
         /* SECCIÓN SOBRE MÍ */
         .about-text { color: var(--text-dim); font-size: 1.05rem; line-height: 1.8; margin-bottom: 1rem; }
@@ -116,7 +198,31 @@
             transition: 0.3s;
         }
         .tech-pill:hover { border-color: var(--text-main); transform: scale(1.05); }
-        .tech-pill img { width: 16px; height: 16px; filter: grayscale(1) brightness(10); }
+        .tech-pill img { width: 16px; height: 16px; filter: grayscale(1) brightness(10); transition: filter 0.3s;}
+        
+        body.light-mode .tech-pill img, 
+        body.light-mode .vscode-badge img { 
+            filter: grayscale(1) brightness(0); 
+        }
+
+        /* NUEVA SECCIÓN: SOFT SKILLS */
+        .soft-skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .soft-skill-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            transition: 0.3s;
+        }
+        .soft-skill-card:hover { border-color: var(--text-main); color: var(--text-main); }
+        .soft-skill-icon { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
 
         /* TIMELINE */
         .timeline-item {
@@ -127,6 +233,7 @@
             content: ''; position: absolute; left: -6px; top: 5px;
             width: 10px; height: 10px; background: var(--bg);
             border: 2px solid var(--text-main); border-radius: 50%;
+            transition: background-color 0.3s ease;
         }
         .timeline-date { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
         .timeline-title { font-size: 1.1rem; font-weight: bold; margin: 5px 0; }
@@ -140,13 +247,16 @@
             padding: 1.5rem; border-radius: 6px; transition: 0.3s;
             text-decoration: none; color: inherit; display: block;
         }
-        .card:hover { border-color: var(--text-main); transform: translateY(-3px); background: #1a1a1a; }
+        .card:hover { border-color: var(--text-main); transform: translateY(-3px); }
+        body:not(.light-mode) .card:hover { background: #1a1a1a; }
+        body.light-mode .card:hover { background: #f0f0f0; }
+
         .card h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
         .card p { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
 
         /* IDIOMAS */
         .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-        .lang-item { display: flex; justify-content: space-between; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .lang-item { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
         .lang-name { font-weight: 600; }
         .lang-level { color: var(--text-dim); font-size: 0.9rem; }
 
@@ -154,7 +264,8 @@
         footer { 
             margin-top: 5rem; padding: 2rem 0; border-top: 1px solid var(--border); 
             font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--text-dim);
-            background: #000;
+            background: var(--bg);
+            transition: background-color 0.3s ease;
         }
         .terminal-line { margin-bottom: 5px; }
         .prompt { color: var(--terminal-green); }
@@ -162,25 +273,30 @@
         .contact-links a { color: var(--text-main); text-decoration: none; margin-right: 15px; }
         .contact-links a:hover { text-decoration: underline; color: var(--terminal-green); }
 
+        .copy-btn {
+            background: none; border: none; cursor: pointer; color: var(--text-dim);
+            font-size: 0.8rem; padding: 0 5px; transition: 0.2s;
+        }
+        .copy-btn:hover { color: var(--text-main); transform: scale(1.1); }
+
         .vscode-badge {
-            display: inline-flex; align-items: center; gap: 8px; /* Separación icono-texto */
+            display: inline-flex; align-items: center; gap: 8px;
             margin-top: 15px; 
-            opacity: 0.8; /* Más visible */
+            opacity: 0.8; 
         }
-        .vscode-badge img { 
-            width: 18px; 
-            vertical-align: middle; 
-            /* Quitamos filtros complejos, usamos la imagen blanca directa */
-        }
+        .vscode-badge img { width: 18px; vertical-align: middle; }
 
         @media (max-width: 600px) {
             .profile-header { flex-direction: column; text-align: center; gap: 1rem; }
             h1 { font-size: 2.5rem; margin-top: 0; }
             .lang-grid { grid-template-columns: 1fr; }
+            .theme-toggle { top: 10px; right: 10px; }
         }
     </style>
 </head>
 <body>
+
+    <button class="theme-toggle" id="theme-btn" title="Cambiar Tema">🌙</button>
 
     <header></header>
 
@@ -192,6 +308,11 @@
                 <h1 class="scan-text">YAGO DURAN</h1>
                 <div class="role-container">
                     > <span class="typing-text" id="typewriter"></span>
+                </div>
+                
+                <div class="status-pill">
+                    <span class="status-dot"></span>
+                    Open to Work
                 </div>
             </div>
         </div>
@@ -216,7 +337,8 @@
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/dotnet/white"> MAUI</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/python/white"> Python</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/sql/white"> SQL</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/sqlite/white"> SQLite</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/html5/white"> HTML5</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/sqlite/white"> SQLite</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/html5/white"> HTML5</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/css3/white"> CSS3</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/lua/white"> Lua</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/android/white"> Android</div>
@@ -225,12 +347,39 @@
         </section>
 
         <section>
+            <h2>Cómo trabajo (Soft Skills)</h2>
+            <div class="soft-skills-grid">
+                <div class="soft-skill-card">
+                    <span class="soft-skill-icon">🧩</span>
+                    Resolución de Problemas
+                </div>
+                <div class="soft-skill-card">
+                    <span class="soft-skill-icon">🤝</span>
+                    Trabajo en Equipo
+                </div>
+                <div class="soft-skill-card">
+                    <span class="soft-skill-icon">⏱️</span>
+                    Gestión del Tiempo
+                </div>
+                <div class="soft-skill-card">
+                    <span class="soft-skill-icon">📚</span>
+                    Aprendizaje Continuo
+                </div>
+            </div>
+        </section>
+
+        <section>
             <h2>IDEs y Herramientas</h2>
             <div class="tech-stack tools-stack">
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudiocode/white"> VS Code</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudio/white"> VS Community</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/androidstudio/white"> Android Studio</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudio/white"> VS Community</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/androidstudio/white"> Android Studio</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/eclipseide/white"> Eclipse</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/git/white"> Git</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/notepadplusplus/white"> Notepad++</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/mysql/white"> MySQL Workbench</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/linux/white"> Linux</div> </div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/git/white"> Git</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/notepadplusplus/white"> Notepad++</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/mysql/white"> MySQL Workbench</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/linux/white"> Linux</div>
+            </div>
         </section>
 
         <section>
@@ -304,6 +453,11 @@
                     > <a href="https://github.com/yagoduran">GitHub</a>
                     <a href="#">LinkedIn</a>
                     <a href="mailto:yagoduran.tolosaldea@gmail.com">Email</a>
+                    <button class="copy-btn" onclick="copyEmail()" title="Copiar Email">📋</button>
+                </div>
+                <br>
+                <div style="margin-top: 10px;">
+                    <img src="https://komarev.com/ghpvc/?username=yagoduran&color=green&style=flat-square&label=VISITAS" alt="Visitas al perfil" />
                 </div>
                 <br>
                 <div class="vscode-badge">
@@ -342,6 +496,37 @@
             setTimeout(type, typeSpeed);
         }
         document.addEventListener('DOMContentLoaded', type);
+
+        // COPIAR EMAIL
+        function copyEmail() {
+            navigator.clipboard.writeText("yagoduran.tolosaldea@gmail.com").then(() => {
+                const btn = document.querySelector('.copy-btn');
+                const originalText = btn.textContent;
+                btn.textContent = "✅";
+                setTimeout(() => btn.textContent = originalText, 2000);
+            });
+        }
+
+        // TOGGLE THEME
+        const themeBtn = document.getElementById('theme-btn');
+        const body = document.body;
+        
+        if (localStorage.getItem('theme') === 'light') {
+            body.classList.add('light-mode');
+            themeBtn.textContent = '☀️';
+        }
+
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                themeBtn.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            } else {
+                themeBtn.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            }
+        });
+
         console.log("%c¡Hola! 👋", "color: #33ff00; font-size: 20px; font-weight: bold;");
         console.log("%cEscríbeme: yagoduran.tolosaldea@gmail.com", "color: #aaaaaa;");
     </script>
