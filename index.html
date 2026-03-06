@@ -3,16 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yago Duran | Multiplatform Dev</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <meta property="og:title" content="Yago Duran | Developer & SysAdmin">
+    <meta property="og:description" content="Portafolio de Desarrollo Multiplataforma (DAM) y Sistemas (SMR). Especialista en Java, MAUI y Redes.">
+    <meta property="og:image" content="https://preview.redd.it/5km5uycgekac1.gif?width=1200&format=mp4&s=12bce94bb42f5fed8c2c6a4f5aaa9afb25f4695e">
+    <meta property="og:url" content="https://yagoduran.github.io">
+    <meta name="theme-color" content="#000000">
+
+    <title>Yago Duran | Portafolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --bg: #000000;
+            --bg: #050505;
             --card-bg: #111111;
             --text-main: #ffffff;
-            --text-dim: #a0a0a0;
+            --text-dim: #888888;
             --accent: #ffffff;
             --border: #333333;
+            --terminal-green: #33ff00; /* Color hacker para el footer */
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,163 +31,267 @@
             background-color: var(--bg);
             color: var(--text-main);
             overflow-x: hidden;
-            scroll-behavior: smooth;
+            line-height: 1.6;
         }
 
-        /* ANIMACIÓN DE ENTRADA */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ANIMACIÓN BARRIDO NOMBRE */
+        @keyframes scan {
+            0% { background-position: -100%; }
+            100% { background-position: 200%; }
         }
 
-        .reveal { animation: fadeInUp 0.8s ease forwards; }
+        .scan-text {
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,1) 50%, 
+                rgba(255,255,255,0.1) 100%);
+            background-size: 200% auto;
+            color: rgba(255,255,255,0.1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: scan 4s linear infinite;
+        }
 
+        /* HEADER */
         header {
-            height: 50vh;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8)), 
+            height: 35vh;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg)), 
                         url('https://preview.redd.it/5km5uycgekac1.gif?width=1200&format=mp4&s=12bce94bb42f5fed8c2c6a4f5aaa9afb25f4695e');
             background-size: cover;
             background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             border-bottom: 1px solid var(--border);
         }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 4rem 2rem; }
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
 
-        h1 { font-size: 3.5rem; letter-spacing: -2px; margin-bottom: 0.5rem; }
-        .subtitle { font-size: 1.2rem; color: var(--text-dim); margin-bottom: 2rem; }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; line-height: 1; margin-bottom: 0.5rem; margin-top: -3rem; }
+        
+        /* EFECTO MÁQUINA DE ESCRIBIR */
+        .role-container { height: 1.5rem; margin-bottom: 1.5rem; color: var(--text-dim); font-size: 1.1rem; }
+        .typing-text::after { content: '|'; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* SECCIÓN LOGOS */
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin: 3rem 0;
+        /* BOTÓN CV */
+        .btn-cv {
+            display: inline-flex; align-items: center; gap: 10px;
+            background-color: var(--text-main); color: var(--bg);
+            padding: 10px 20px; text-decoration: none; font-weight: 700;
+            border-radius: 4px; transition: 0.3s; margin-bottom: 2rem;
+        }
+        .btn-cv:hover { background-color: #cccccc; transform: translateY(-2px); }
+
+        h2 { 
+            font-size: 1.4rem; margin-top: 3.5rem; margin-bottom: 1.5rem; 
+            border-bottom: 1px solid var(--border); padding-bottom: 10px;
+            display: inline-block;
         }
 
-        .tech-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.3s ease;
+        /* TECH STACK */
+        .tech-stack { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; }
+        .tech-pill {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 6px 14px; border-radius: 50px; font-size: 0.8rem;
+            transition: 0.3s;
         }
+        .tech-pill:hover { border-color: var(--text-main); transform: scale(1.05); }
+        .tech-pill img { width: 16px; height: 16px; filter: grayscale(1) brightness(10); }
 
-        .tech-item:hover { transform: scale(1.1); }
-
-        .tech-item img {
-            width: 40px;
-            height: 40px;
-            filter: grayscale(1) brightness(2); /* Logos en blanco */
+        /* TIMELINE */
+        .timeline-item {
+            border-left: 2px solid var(--border); padding-left: 1.5rem;
+            margin-bottom: 2rem; position: relative;
         }
-
-        .tech-item span { font-size: 0.7rem; color: var(--text-dim); }
-
-        /* PROYECTOS */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 2rem;
+        .timeline-item::before {
+            content: ''; position: absolute; left: -6px; top: 5px;
+            width: 10px; height: 10px; background: var(--bg);
+            border: 2px solid var(--text-main); border-radius: 50%;
         }
+        .timeline-date { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .timeline-title { font-size: 1.1rem; font-weight: bold; margin: 5px 0; }
+        .timeline-place { color: var(--text-main); font-weight: 500; font-size: 0.95rem; }
+        .timeline-desc { color: var(--text-dim); font-size: 0.9rem; margin-top: 0.5rem; }
 
+        /* GRID PROYECTOS */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            padding: 2rem;
-            border-radius: 4px;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: inherit;
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 1.5rem; border-radius: 6px; transition: 0.3s;
+            text-decoration: none; color: inherit; display: block;
         }
+        .card:hover { border-color: var(--text-main); transform: translateY(-3px); background: #1a1a1a; }
+        .card h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .card p { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
 
-        .card:hover {
-            border-color: var(--text-main);
-            background: #1a1a1a;
+        /* IDIOMAS */
+        .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .lang-item { display: flex; justify-content: space-between; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .lang-name { font-weight: 600; }
+        .lang-level { color: var(--text-dim); font-size: 0.9rem; }
+
+        /* FOOTER TERMINAL STYLE */
+        footer { 
+            margin-top: 5rem; padding: 2rem 0; border-top: 1px solid var(--border); 
+            font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--text-dim);
+            background: #000;
         }
+        .terminal-line { margin-bottom: 5px; }
+        .prompt { color: var(--terminal-green); }
+        .cmd { color: var(--text-main); }
+        
+        .contact-links a { color: var(--text-main); text-decoration: none; margin-right: 15px; }
+        .contact-links a:hover { text-decoration: underline; color: var(--terminal-green); }
 
-        .card h3 { margin-bottom: 10px; font-size: 1.5rem; }
-        .card p { color: var(--text-dim); font-size: 0.9rem; line-height: 1.6; }
-
-        /* SISTEMAS Y REDES SECTION */
-        .systems-box {
-            border-left: 2px solid var(--text-main);
-            padding-left: 1.5rem;
-            margin: 4rem 0;
-        }
-
-        footer {
-            border-top: 1px solid var(--border);
-            padding: 3rem 0;
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.8rem;
-        }
-
-        .contact-link {
-            color: var(--text-main);
-            text-decoration: none;
-            font-weight: bold;
-            border-bottom: 1px solid var(--text-main);
-            padding-bottom: 2px;
-        }
-
-        @media (max-width: 600px) {
-            h1 { font-size: 2.5rem; }
-        }
+        @media (max-width: 600px) { h1 { font-size: 2.5rem; } .lang-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <header></header>
 
-    <div class="container reveal">
-        <section>
-            <h1>Yago Duran</h1>
-            <p class="subtitle">Desarrollador de Aplicaciones Multiplataforma & Especialista en Sistemas</p>
-            
-            <div class="tech-stack">
-                <div class="tech-item"><img src="https://cdn.simpleicons.org/java/white" alt="Java"><span>Java</span></div>
-                <div class="tech-item"><img src="https://cdn.simpleicons.org/dotnet/white" alt="MAUI"><span>MAUI</span></div>
-                <div class="tech-item"><img src="https://cdn.simpleicons.org/lua/white" alt="Lua"><span>Lua</span></div>
-                <div class="tech-item"><img src="https://cdn.simpleicons.org/flutter/white" alt="Flutter"><span>Flutter</span></div>
-                <div class="tech-item"><img src="https://cdn.simpleicons.org/androidstudio/white" alt="Android"><span>Android</span></div>
-                <div class="tech-item"><img src="https://cdn.simpleicons.org/visualstudiocode/white" alt="VS Code"><span>VS Code</span></div>
-                <div class="tech-item"><img src="https://cdn.simpleicons.org/html5/white" alt="HTML5"><span>HTML5</span></div>
-                <div class="tech-item"><img src="https://cdn.simpleicons.org/css3/white" alt="CSS3"><span>CSS3</span></div>
-            </div>
-        </section>
+    <div class="container">
+        
+        <h1 class="scan-text">YAGO DURAN</h1>
+        
+        <div class="role-container">
+            > <span class="typing-text" id="typewriter"></span>
+        </div>
 
-        <section class="systems-box">
-            <h2>Sistemas y Redes</h2>
-            <p>Configuración de infraestructuras críticas, gestión de redes locales y administración de servidores. Enfoque en seguridad y optimización de rendimiento.</p>
+        <a href="cv.pdf" target="_blank" class="btn-cv">Descargar CV (PDF) ⬇</a>
+
+        <div class="tech-stack">
+            <div class="tech-pill"><img src="https://cdn.simpleicons.org/java/white"> Java</div>
+            <div class="tech-pill"><img src="https://cdn.simpleicons.org/dotnet/white"> MAUI</div>
+            <div class="tech-pill"><img src="https://cdn.simpleicons.org/lua/white"> Lua</div>
+            <div class="tech-pill"><img src="https://cdn.simpleicons.org/android/white"> Android</div>
+            <div class="tech-pill"><img src="https://cdn.simpleicons.org/linux/white"> Linux</div>
+            <div class="tech-pill"><img src="https://cdn.simpleicons.org/cisco/white"> Redes</div>
+        </div>
+
+        <section>
+            <h2>Experiencia Laboral</h2>
+            
+            <div class="timeline-item">
+                <div class="timeline-date">Mar 2026 - Actualidad</div>
+                <div class="timeline-title">Analista de Sistemas & Programador RPS</div>
+                <div class="timeline-place">Sodesa (Plásticos Reciclados)</div>
+                <p class="timeline-desc">Desarrollo ERP RPS, optimización SQL y análisis de procesos productivos.</p>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-date">Sep 2023 - Feb 2024</div>
+                <div class="timeline-title">Técnico Informático</div>
+                <div class="timeline-place">Colegio Público Murumendi</div>
+                <p class="timeline-desc">Mantenimiento integral del parque informático y soporte técnico en entorno educativo.</p>
+            </div>
         </section>
 
         <section>
             <h2>Proyectos Seleccionados</h2>
             <div class="grid">
-                <a href="#" class="card">
-                    <h3>App Multiplataforma</h3>
-                    <p>Desarrollo integral con .NET MAUI enfocado en UX minimalista y alto rendimiento en dispositivos iOS/Android.</p>
+                <a href="https://github.com/yagoduran/bizimatch" class="card">
+                    <h3>🏠 BiziMatch</h3>
+                    <p>App mobile (.NET MAUI) para encontrar compañeros de piso estudiantes. Algoritmo de afinidad basado en hábitos de estudio.</p>
                 </a>
-                <a href="#" class="card">
-                    <h3>Automatización con Lua</h3>
-                    <p>Scripts avanzados para optimización de flujos de trabajo y desarrollo de lógica de juegos.</p>
+                
+                <a href="https://github.com/yagoduran/cubatacounter" class="card">
+                    <h3>🍹 CubataCounter</h3>
+                    <p>Aplicación social Android con geolocalización y estadísticas en tiempo real para eventos sociales. Integración con Firebase.</p>
                 </a>
+
                 <a href="#" class="card">
-                    <h3>Gestión de Redes</h3>
-                    <p>Documentación y scripts de configuración para topologías de red segura.</p>
+                    <h3>⚙️ Scripting Systems</h3>
+                    <p>Colección de scripts en Bash y Lua para automatización de servidores y hardening de redes Linux.</p>
                 </a>
             </div>
         </section>
 
+        <section>
+            <h2>Formación</h2>
+            <div class="timeline-item">
+                <div class="timeline-title">Desarrollo de Aplicaciones Multiplataforma (DAM)</div>
+                <div class="timeline-place">CIFP Tolosaldea LHII</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-title">Sistemas Microinformáticos y Redes (SMR)</div>
+                <div class="timeline-place">CIFP Tolosaldea LHII</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Idiomas</h2>
+            <div class="lang-grid">
+                <div class="lang-item"><span class="lang-name">Español</span><span class="lang-level">Nativo</span></div>
+                <div class="lang-item"><span class="lang-name">Euskera</span><span class="lang-level">Avanzado</span></div>
+                <div class="lang-item"><span class="lang-name">Gallego</span><span class="lang-level">Medio</span></div>
+                <div class="lang-item"><span class="lang-name">Inglés</span><span class="lang-level">Técnico</span></div>
+            </div>
+        </section>
+
         <footer>
-            <p>CONSTRUIDO POR YAGO DURAN — 2024</p><br>
-            <p><a href="https://github.com/yagoduran" class="contact-link">GITHUB</a> &nbsp; | &nbsp; <a href="#" class="contact-link">LINKEDIN</a></p>
+            <div class="container">
+                <div class="terminal-line">
+                    <span class="prompt">yago@portfolio:~$</span> <span class="cmd">whoami</span>
+                </div>
+                <div class="terminal-line" style="margin-bottom: 15px;">
+                    > Yago Duran. 2026. Zubieta, País Vasco.
+                </div>
+                
+                <div class="terminal-line">
+                    <span class="prompt">yago@portfolio:~$</span> <span class="cmd">contact --list</span>
+                </div>
+                <div class="contact-links">
+                    > <a href="https://github.com/yagoduran">GitHub</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="mailto:tu-email@gmail.com">Email</a>
+                </div>
+                <br>
+                <div style="opacity: 0.5; font-size: 0.7rem;">Hecho con <img src="https://cdn.simpleicons.org/visualstudiocode/white" style="width: 10px; vertical-align: middle;"> VS Code</div>
+            </div>
         </footer>
+
     </div>
+
+    <script>
+        const textElement = document.getElementById('typewriter');
+        const phrases = ['Desarrollador Multiplataforma.', 'Técnico de Sistemas.', 'Amante de las Redes.', 'Yago Duran.'];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                typeSpeed = 2000; // Pausa al terminar de escribir
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500; // Pausa antes de empezar la siguiente
+            }
+
+            setTimeout(type, typeSpeed);
+        }
+
+        document.addEventListener('DOMContentLoaded', type);
+        
+        // EASTER EGG CONSOLA
+        console.log("%c¡Hola! 👋", "color: #33ff00; font-size: 20px; font-weight: bold;");
+        console.log("%cSi estás leyendo esto, probablemente te interese mi código.", "color: #ffffff;");
+        console.log("%cEscríbeme y charlamos: tu-email@gmail.com", "color: #aaaaaa;");
+    </script>
 
 </body>
 </html>
