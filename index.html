@@ -54,7 +54,7 @@
 
         /* HEADER */
         header {
-            height: 15vh; /* Altura reducida y fondo sólido para arreglar la línea blanca */
+            height: 15vh;
             background-color: #000;
             border-bottom: 1px solid var(--border);
         }
@@ -75,15 +75,14 @@
             border-radius: 50%;
             border: 2px solid var(--border);
             object-fit: cover;
-            /* REEMPLAZA ESTA URL CON TU FOTO REAL: perfil.jpg */
-            background-image: 'perfil.png'; 
+            /* ⚠️ IMPORTANTE: Pon tu foto llamada perfil.jpg en la carpeta */
+            background-image: url('https://via.placeholder.com/150'); 
             background-size: cover;
             background-position: center;
         }
 
         h1 { font-size: 3.5rem; letter-spacing: -2px; line-height: 1; margin-bottom: 0.5rem; }
         
-        /* EFECTO MÁQUINA DE ESCRIBIR */
         .role-container { height: 1.5rem; margin-bottom: 1rem; color: var(--text-dim); font-size: 1.1rem; }
         .typing-text::after { content: '|'; animation: blink 1s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
@@ -93,9 +92,13 @@
             display: inline-flex; align-items: center; gap: 10px;
             background-color: var(--text-main); color: var(--bg);
             padding: 10px 20px; text-decoration: none; font-weight: 700;
-            border-radius: 4px; transition: 0.3s; margin-bottom: 2rem;
+            border-radius: 4px; transition: 0.3s; margin-bottom: 3rem;
         }
         .btn-cv:hover { background-color: #cccccc; transform: translateY(-2px); }
+
+        /* SECCIÓN SOBRE MÍ */
+        .about-text { color: var(--text-dim); font-size: 1.05rem; line-height: 1.8; margin-bottom: 1rem; }
+        .about-text strong { color: var(--text-main); font-weight: 600; }
 
         h2 { 
             font-size: 1.4rem; margin-top: 3.5rem; margin-bottom: 1.5rem; 
@@ -105,7 +108,7 @@
 
         /* TECH STACK Y HERRAMIENTAS */
         .tech-stack { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; }
-        .tools-stack { margin-bottom: 2rem; } /* Sección separada para IDEs */
+        .tools-stack { margin-bottom: 2rem; }
         .tech-pill {
             display: flex; align-items: center; gap: 8px;
             background: var(--card-bg); border: 1px solid var(--border);
@@ -147,7 +150,7 @@
         .lang-name { font-weight: 600; }
         .lang-level { color: var(--text-dim); font-size: 0.9rem; }
 
-        /* FOOTER TERMINAL STYLE */
+        /* FOOTER */
         footer { 
             margin-top: 5rem; padding: 2rem 0; border-top: 1px solid var(--border); 
             font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--text-dim);
@@ -156,23 +159,22 @@
         .terminal-line { margin-bottom: 5px; }
         .prompt { color: var(--terminal-green); }
         .cmd { color: var(--text-main); }
-        
         .contact-links a { color: var(--text-main); text-decoration: none; margin-right: 15px; }
         .contact-links a:hover { text-decoration: underline; color: var(--terminal-green); }
 
         .vscode-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            margin-top: 10px; opacity: 0.5; /* Opacidad ajustada */
+            display: inline-flex; align-items: center; gap: 8px; /* Separación icono-texto */
+            margin-top: 15px; 
+            opacity: 0.8; /* Más visible */
         }
-        /* Filtro ajustado para que sea blanco puro y visible */
-        .vscode-badge img { width: 14px; filter: brightness(0) invert(1); }
+        .vscode-badge img { 
+            width: 18px; 
+            vertical-align: middle; 
+            /* Quitamos filtros complejos, usamos la imagen blanca directa */
+        }
 
         @media (max-width: 600px) {
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
-                gap: 1rem;
-            }
+            .profile-header { flex-direction: column; text-align: center; gap: 1rem; }
             h1 { font-size: 2.5rem; margin-top: 0; }
             .lang-grid { grid-template-columns: 1fr; }
         }
@@ -185,9 +187,9 @@
     <div class="container">
         
         <div class="profile-header">
-            <div class="profile-img"></div> <div>
+            <div class="profile-img"></div>
+            <div>
                 <h1 class="scan-text">YAGO DURAN</h1>
-                
                 <div class="role-container">
                     > <span class="typing-text" id="typewriter"></span>
                 </div>
@@ -197,6 +199,16 @@
         <a href="cv.pdf" target="_blank" class="btn-cv">Descargar CV (PDF) ⬇</a>
 
         <section>
+            <h2>Sobre Mí</h2>
+            <p class="about-text">
+                Tengo <strong>21 años</strong> y la informática ha sido mi pasión desde que era pequeño. Lo que empezó trasteando con ordenadores por curiosidad se ha convertido en mi carrera profesional.
+            </p>
+            <p class="about-text">
+                Gracias a mi formación híbrida como Técnico de Sistemas (SMR) y Desarrollador (DAM), tengo una visión global de la tecnología: entiendo el código que escribo y la infraestructura donde se ejecuta.
+            </p>
+        </section>
+
+        <section>
             <h2>Stack Tecnológico</h2>
             <div class="tech-stack">
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/java/white"> Java</div>
@@ -204,11 +216,10 @@
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/dotnet/white"> MAUI</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/python/white"> Python</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/sql/white"> SQL</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/html5/white"> HTML5</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/sqlite/white"> SQLite</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/html5/white"> HTML5</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/css3/white"> CSS3</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/lua/white"> Lua</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/android/white"> Android</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/linux/white"> Linux</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/cisco/white"> Redes</div>
             </div>
         </section>
@@ -217,22 +228,19 @@
             <h2>IDEs y Herramientas</h2>
             <div class="tech-stack tools-stack">
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudiocode/white"> VS Code</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudio/white"> Visual Studio</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/androidstudio/white"> Android Studio</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudio/white"> VS Community</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/androidstudio/white"> Android Studio</div>
                 <div class="tech-pill"><img src="https://cdn.simpleicons.org/eclipseide/white"> Eclipse</div>
-            </div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/git/white"> Git</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/notepadplusplus/white"> Notepad++</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/mysql/white"> MySQL Workbench</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/linux/white"> Linux</div> </div>
         </section>
 
         <section>
             <h2>Experiencia Laboral</h2>
-            
             <div class="timeline-item">
                 <div class="timeline-date">Mar 2026 - Actualidad</div>
                 <div class="timeline-title">Analista de Sistemas & Programador RPS</div>
                 <div class="timeline-place">Sodesa (Plásticos Reciclados)</div>
                 <p class="timeline-desc">Desarrollo ERP RPS, optimización SQL y análisis de procesos productivos.</p>
             </div>
-
             <div class="timeline-item">
                 <div class="timeline-date">Sep 2023 - Feb 2024</div>
                 <div class="timeline-title">Técnico Informático</div>
@@ -248,12 +256,10 @@
                     <h3>🏠 BiziMatch</h3>
                     <p>App mobile (.NET MAUI) para encontrar compañeros de piso estudiantes. Algoritmo de afinidad basado en hábitos de estudio.</p>
                 </a>
-                
                 <a href="https://github.com/yagoduran/cubatacounter" class="card">
                     <h3>🍹 CubataCounter</h3>
                     <p>Aplicación social Android con geolocalización y estadísticas en tiempo real para eventos sociales. Integración con Firebase.</p>
                 </a>
-
                 <a href="#" class="card">
                     <h3>🎮 Servidores de Roleplay en FiveM</h3>
                     <p>Desarrollo de scripts y sistemas personalizados en Lua para servidores de FiveM, enfocado en la experiencia de roleplay.</p>
@@ -289,20 +295,19 @@
                     <span class="prompt">yago@portfolio:~$</span> <span class="cmd">whoami</span>
                 </div>
                 <div class="terminal-line" style="margin-bottom: 15px;">
-                    > Yago Duran. 2026. Beasain, País Vasco.
+                    > Yago Duran. 2026. Zubieta, País Vasco.
                 </div>
-                
                 <div class="terminal-line">
                     <span class="prompt">yago@portfolio:~$</span> <span class="cmd">contact --list</span>
                 </div>
                 <div class="contact-links">
                     > <a href="https://github.com/yagoduran">GitHub</a>
                     <a href="#">LinkedIn</a>
-                    <a href="mailto:yagoduran.tolosaldea@gmail.com">Email</a> 
+                    <a href="mailto:yagoduran.tolosaldea@gmail.com">Email</a>
                 </div>
                 <br>
                 <div class="vscode-badge">
-                    Hecho con <img src="https://cdn.simpleicons.org/visualstudiocode/white" alt="VS Code"> VS Code
+                    Hecho con <img src="https://cdn.simpleicons.org/visualstudiocode/white" alt="VS Code Logo"> VS Code
                 </div>
             </div>
         </footer>
@@ -311,7 +316,6 @@
 
     <script>
         const textElement = document.getElementById('typewriter');
-        // Lista de frases actualizada: sin "Técnico de Sistemas" ni "Yago Duran"
         const phrases = ['Desarrollador Multiplataforma.', 'Amante de las Redes.'];
         let phraseIndex = 0;
         let charIndex = 0;
@@ -319,7 +323,6 @@
 
         function type() {
             const currentPhrase = phrases[phraseIndex];
-            
             if (isDeleting) {
                 textElement.textContent = currentPhrase.substring(0, charIndex - 1);
                 charIndex--;
@@ -327,29 +330,20 @@
                 textElement.textContent = currentPhrase.substring(0, charIndex + 1);
                 charIndex++;
             }
-
             let typeSpeed = isDeleting ? 50 : 100;
-
             if (!isDeleting && charIndex === currentPhrase.length) {
                 isDeleting = true;
-                typeSpeed = 2000; // Pausa al terminar de escribir
+                typeSpeed = 2000;
             } else if (isDeleting && charIndex === 0) {
                 isDeleting = false;
                 phraseIndex = (phraseIndex + 1) % phrases.length;
-                typeSpeed = 500; // Pausa antes de empezar la siguiente
+                typeSpeed = 500;
             }
-
             setTimeout(type, typeSpeed);
         }
-
         document.addEventListener('DOMContentLoaded', type);
-        
-        // EASTER EGG CONSOLA
         console.log("%c¡Hola! 👋", "color: #33ff00; font-size: 20px; font-weight: bold;");
-        console.log("%cSi estás leyendo esto, probablemente te interese mi código.", "color: #ffffff;");
-        // Correo actualizado aquí también
-        console.log("%cEscríbeme y charlamos: yagoduran.tolosaldea@gmail.com", "color: #aaaaaa;"); 
+        console.log("%cEscríbeme: yagoduran.tolosaldea@gmail.com", "color: #aaaaaa;");
     </script>
-
 </body>
 </html>
