@@ -3,128 +3,347 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Nombre | Multiplatform Dev</title>
+    
+    <meta property="og:title" content="Yago Duran | Multiplatform Developer">
+    <meta property="og:description" content="Portafolio de Desarrollo Multiplataforma (DAM) y Sistemas. Especialista en Java, MAUI y Servidores FiveM.">
+    <meta property="og:url" content="https://yagoduran.github.io">
+    <meta name="theme-color" content="#000000">
+
+    <title>Yago Duran | Portafolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    
     <style>
-        /* CONFIGURACIÓN MINIMALISTA */
         :root {
-            --bg: #0d1117;
-            --text: #c9d1d9;
-            --accent: #bc8cf2; /* Color morado para combinar con tu GIF */
-            --card-bg: #161b22;
+            --bg: #050505;
+            --card-bg: #111111;
+            --text-main: #ffffff;
+            --text-dim: #888888;
+            --accent: #ffffff;
+            --border: #333333;
+            --terminal-green: #33ff00;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
+            color: var(--text-main);
+            overflow-x: hidden;
             line-height: 1.6;
         }
 
+        /* ANIMACIÓN BARRIDO NOMBRE */
+        @keyframes scan {
+            0% { background-position: -100%; }
+            100% { background-position: 200%; }
+        }
+
+        .scan-text {
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0.1) 0%, 
+                rgba(255,255,255,1) 50%, 
+                rgba(255,255,255,0.1) 100%);
+            background-size: 200% auto;
+            color: rgba(255,255,255,0.1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: scan 4s linear infinite;
+        }
+
+        /* HEADER */
         header {
-            height: 400px;
-            background: url('https://preview.redd.it/5km5uycgekac1.gif?width=1200&format=mp4&s=12bce94bb42f5fed8c2c6a4f5aaa9afb25f4695e') no-repeat center center;
-            background-size: cover;
+            height: 15vh;
+            background-color: #000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
+
+        /* FOTO DE PERFIL Y NOMBRE */
+        .profile-header {
             display: flex;
             align-items: center;
-            justify-content: center;
-            border-bottom: 2px solid var(--accent);
+            gap: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            object-fit: cover;
+            /* ⚠️ IMPORTANTE: Pon tu foto llamada perfil.jpg en la carpeta */
+            background-image: 'perfil.png'; 
+            background-size: cover;
+            background-position: center;
         }
 
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem;
-        }
-
-        h1, h2 { color: var(--accent); }
+        h1 { font-size: 3.5rem; letter-spacing: -2px; line-height: 1; margin-bottom: 0.5rem; }
         
-        .section { margin-bottom: 3rem; }
+        .role-container { height: 1.5rem; margin-bottom: 1rem; color: var(--text-dim); font-size: 1.1rem; }
+        .typing-text::after { content: '|'; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-        /* GRID DE PROYECTOS */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+        /* BOTÓN CV */
+        .btn-cv {
+            display: inline-flex; align-items: center; gap: 10px;
+            background-color: var(--text-main); color: var(--bg);
+            padding: 10px 20px; text-decoration: none; font-weight: 700;
+            border-radius: 4px; transition: 0.3s; margin-bottom: 3rem;
+        }
+        .btn-cv:hover { background-color: #cccccc; transform: translateY(-2px); }
+
+        /* SECCIÓN SOBRE MÍ */
+        .about-text { color: var(--text-dim); font-size: 1.05rem; line-height: 1.8; margin-bottom: 1rem; }
+        .about-text strong { color: var(--text-main); font-weight: 600; }
+
+        h2 { 
+            font-size: 1.4rem; margin-top: 3.5rem; margin-bottom: 1.5rem; 
+            border-bottom: 1px solid var(--border); padding-bottom: 10px;
+            display: inline-block;
         }
 
-        .card {
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-radius: 8px;
-            border: 1px solid transparent;
+        /* TECH STACK Y HERRAMIENTAS */
+        .tech-stack { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; }
+        .tools-stack { margin-bottom: 2rem; }
+        .tech-pill {
+            display: flex; align-items: center; gap: 8px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 6px 14px; border-radius: 50px; font-size: 0.8rem;
             transition: 0.3s;
         }
+        .tech-pill:hover { border-color: var(--text-main); transform: scale(1.05); }
+        .tech-pill img { width: 16px; height: 16px; filter: grayscale(1) brightness(10); }
 
-        .card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
+        /* TIMELINE */
+        .timeline-item {
+            border-left: 2px solid var(--border); padding-left: 1.5rem;
+            margin-bottom: 2rem; position: relative;
+        }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -6px; top: 5px;
+            width: 10px; height: 10px; background: var(--bg);
+            border: 2px solid var(--text-main); border-radius: 50%;
+        }
+        .timeline-date { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1px; }
+        .timeline-title { font-size: 1.1rem; font-weight: bold; margin: 5px 0; }
+        .timeline-place { color: var(--text-main); font-weight: 500; font-size: 0.95rem; }
+        .timeline-desc { color: var(--text-dim); font-size: 0.9rem; margin-top: 0.5rem; }
+
+        /* GRID PROYECTOS */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            padding: 1.5rem; border-radius: 6px; transition: 0.3s;
+            text-decoration: none; color: inherit; display: block;
+        }
+        .card:hover { border-color: var(--text-main); transform: translateY(-3px); background: #1a1a1a; }
+        .card h3 { margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .card p { color: var(--text-dim); font-size: 0.85rem; line-height: 1.5; }
+
+        /* IDIOMAS */
+        .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+        .lang-item { display: flex; justify-content: space-between; border-bottom: 1px solid #222; padding-bottom: 5px; }
+        .lang-name { font-weight: 600; }
+        .lang-level { color: var(--text-dim); font-size: 0.9rem; }
+
+        /* FOOTER */
+        footer { 
+            margin-top: 5rem; padding: 2rem 0; border-top: 1px solid var(--border); 
+            font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--text-dim);
+            background: #000;
+        }
+        .terminal-line { margin-bottom: 5px; }
+        .prompt { color: var(--terminal-green); }
+        .cmd { color: var(--text-main); }
+        .contact-links a { color: var(--text-main); text-decoration: none; margin-right: 15px; }
+        .contact-links a:hover { text-decoration: underline; color: var(--terminal-green); }
+
+        .vscode-badge {
+            display: inline-flex; align-items: center; gap: 8px; /* Separación icono-texto */
+            margin-top: 15px; 
+            opacity: 0.8; /* Más visible */
+        }
+        .vscode-badge img { 
+            width: 18px; 
+            vertical-align: middle; 
+            /* Quitamos filtros complejos, usamos la imagen blanca directa */
         }
 
-        /* BADGES */
-        .badge {
-            display: inline-block;
-            background: #21262d;
-            padding: 4px 10px;
-            border-radius: 15px;
-            font-size: 0.8rem;
-            margin: 2px;
-            border: 1px solid #30363d;
+        @media (max-width: 600px) {
+            .profile-header { flex-direction: column; text-align: center; gap: 1rem; }
+            h1 { font-size: 2.5rem; margin-top: 0; }
+            .lang-grid { grid-template-columns: 1fr; }
         }
-
-        footer { text-align: center; padding: 2rem; font-size: 0.9rem; opacity: 0.6; }
-
-        a { color: var(--accent); text-decoration: none; }
-        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 
-    <header>
-        </header>
+    <header></header>
 
     <div class="container">
         
-        <section class="section">
-            <h1>Hola, soy [Tu Nombre] 👋</h1>
-            <p>Desarrollador de Aplicaciones Multiplataforma (DAM). Especialista en crear soluciones robustas con <b>Java, MAUI y Lua</b>. También domino el mundo de los <b>Sistemas y Redes</b>.</p>
+        <div class="profile-header">
+            <div class="profile-img"></div>
             <div>
-                <span class="badge">Flutter</span>
-                <span class="badge">MAUI</span>
-                <span class="badge">Java</span>
-                <span class="badge">Lua</span>
-                <span class="badge">Networks</span>
+                <h1 class="scan-text">YAGO DURAN</h1>
+                <div class="role-container">
+                    > <span class="typing-text" id="typewriter"></span>
+                </div>
+            </div>
+        </div>
+
+        <a href="cv.pdf" target="_blank" class="btn-cv">Descargar CV (PDF) ⬇</a>
+
+        <section>
+            <h2>Sobre Mí</h2>
+            <p class="about-text">
+                Tengo <strong>21 años</strong> y la informática ha sido mi pasión desde que era pequeño. Lo que empezó trasteando con ordenadores por curiosidad se ha convertido en mi carrera profesional.
+            </p>
+            <p class="about-text">
+                Gracias a mi formación híbrida como Técnico de Sistemas (SMR) y Desarrollador (DAM), tengo una visión global de la tecnología: entiendo el código que escribo y la infraestructura donde se ejecuta.
+            </p>
+        </section>
+
+        <section>
+            <h2>Stack Tecnológico</h2>
+            <div class="tech-stack">
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/java/white"> Java</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/csharp/white"> C#</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/dotnet/white"> MAUI</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/python/white"> Python</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/sql/white"> SQL</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/sqlite/white"> SQLite</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/html5/white"> HTML5</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/css3/white"> CSS3</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/lua/white"> Lua</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/android/white"> Android</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/cisco/white"> Redes</div>
             </div>
         </section>
 
-        <section class="section">
-            <h2>🚀 Proyectos Destacados</h2>
+        <section>
+            <h2>IDEs y Herramientas</h2>
+            <div class="tech-stack tools-stack">
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudiocode/white"> VS Code</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudio/white"> VS Community</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/androidstudio/white"> Android Studio</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/eclipseide/white"> Eclipse</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/git/white"> Git</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/notepadplusplus/white"> Notepad++</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/mysql/white"> MySQL Workbench</div> <div class="tech-pill"><img src="https://cdn.simpleicons.org/linux/white"> Linux</div> </div>
+        </section>
+
+        <section>
+            <h2>Experiencia Laboral</h2>
+            <div class="timeline-item">
+                <div class="timeline-date">Mar 2026 - Actualidad</div>
+                <div class="timeline-title">Analista de Sistemas & Programador RPS</div>
+                <div class="timeline-place">Sodesa (Plásticos Reciclados)</div>
+                <p class="timeline-desc">Desarrollo ERP RPS, optimización SQL y análisis de procesos productivos.</p>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-date">Sep 2023 - Feb 2024</div>
+                <div class="timeline-title">Técnico Informático</div>
+                <div class="timeline-place">Colegio Público Murumendi</div>
+                <p class="timeline-desc">Mantenimiento integral del parque informático y soporte técnico en entorno educativo.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Proyectos Seleccionados</h2>
             <div class="grid">
-                <div class="card">
-                    <h3>Nombre Proyecto 1</h3>
-                    <p>App multiplataforma hecha con MAUI. Gestión de redes y seguridad.</p>
-                    <a href="#">Ver en GitHub →</a>
-                </div>
-                <div class="card">
-                    <h3>Nombre Proyecto 2</h3>
-                    <p>Scripting avanzado en Lua para automatización de tareas.</p>
-                    <a href="#">Ver en GitHub →</a>
-                </div>
+                <a href="https://github.com/yagoduran/bizimatch" class="card">
+                    <h3>🏠 BiziMatch</h3>
+                    <p>App mobile (.NET MAUI) para encontrar compañeros de piso estudiantes. Algoritmo de afinidad basado en hábitos de estudio.</p>
+                </a>
+                <a href="https://github.com/yagoduran/cubatacounter" class="card">
+                    <h3>🍹 CubataCounter</h3>
+                    <p>Aplicación social Android con geolocalización y estadísticas en tiempo real para eventos sociales. Integración con Firebase.</p>
+                </a>
+                <a href="#" class="card">
+                    <h3>🎮 Servidores de Roleplay en FiveM</h3>
+                    <p>Desarrollo de scripts y sistemas personalizados en Lua para servidores de FiveM, enfocado en la experiencia de roleplay.</p>
+                </a>
             </div>
         </section>
 
-        <section class="section">
-            <h2>🛠️ Mi Toolkit</h2>
-            <p><b>IDEs:</b> VS Code, Visual Studio, Android Studio, Eclipse, Cursor.</p>
-            <p><b>Sistemas:</b> Admin. de Servidores, Networking TCP/IP, Virtualización.</p>
+        <section>
+            <h2>Formación</h2>
+            <div class="timeline-item">
+                <div class="timeline-title">Desarrollo de Aplicaciones Multiplataforma (DAM)</div>
+                <div class="timeline-place">CIFP Tolosaldea LHII</div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-title">Sistemas Microinformáticos y Redes (SMR)</div>
+                <div class="timeline-place">CIFP Tolosaldea LHII</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Idiomas</h2>
+            <div class="lang-grid">
+                <div class="lang-item"><span class="lang-name">Español</span><span class="lang-level">Nativo</span></div>
+                <div class="lang-item"><span class="lang-name">Euskera</span><span class="lang-level">Avanzado</span></div>
+                <div class="lang-item"><span class="lang-name">Gallego</span><span class="lang-level">Medio</span></div>
+                <div class="lang-item"><span class="lang-name">Inglés</span><span class="lang-level">Técnico</span></div>
+            </div>
         </section>
 
         <footer>
-            <p>&copy; 2024 - Creado con ❤️ y CSS Minimalista</p>
-            <p><a href="https://github.com/tu-usuario">GitHub</a> | <a href="#">LinkedIn</a></p>
+            <div class="container">
+                <div class="terminal-line">
+                    <span class="prompt">yago@portfolio:~$</span> <span class="cmd">whoami</span>
+                </div>
+                <div class="terminal-line" style="margin-bottom: 15px;">
+                    > Yago Duran. 2026. Beasain, País Vasco.
+                </div>
+                <div class="terminal-line">
+                    <span class="prompt">yago@portfolio:~$</span> <span class="cmd">contact --list</span>
+                </div>
+                <div class="contact-links">
+                    > <a href="https://github.com/yagoduran">GitHub</a>
+                    <a href="#">LinkedIn</a>
+                    <a href="mailto:yagoduran.tolosaldea@gmail.com">Email</a>
+                </div>
+                <br>
+                <div class="vscode-badge">
+                    Hecho con VS Code
+                </div>
+            </div>
         </footer>
 
     </div>
 
+    <script>
+        const textElement = document.getElementById('typewriter');
+        const phrases = ['Desarrollador Multiplataforma.', 'Amante de las Redes.'];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        function type() {
+            const currentPhrase = phrases[phraseIndex];
+            if (isDeleting) {
+                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                charIndex++;
+            }
+            let typeSpeed = isDeleting ? 50 : 100;
+            if (!isDeleting && charIndex === currentPhrase.length) {
+                isDeleting = true;
+                typeSpeed = 2000;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                phraseIndex = (phraseIndex + 1) % phrases.length;
+                typeSpeed = 500;
+            }
+            setTimeout(type, typeSpeed);
+        }
+        document.addEventListener('DOMContentLoaded', type);
+        console.log("%c¡Hola! 👋", "color: #33ff00; font-size: 20px; font-weight: bold;");
+        console.log("%cEscríbeme: yagoduran.tolosaldea@gmail.com", "color: #aaaaaa;");
+    </script>
 </body>
 </html>
