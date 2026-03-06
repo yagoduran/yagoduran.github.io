@@ -4,9 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta property="og:title" content="Yago Duran | Developer & SysAdmin">
-    <meta property="og:description" content="Portafolio de Desarrollo Multiplataforma (DAM) y Sistemas (SMR). Especialista en Java, MAUI y Redes.">
-    <meta property="og:image" content="https://preview.redd.it/5km5uycgekac1.gif?width=1200&format=mp4&s=12bce94bb42f5fed8c2c6a4f5aaa9afb25f4695e">
+    <meta property="og:title" content="Yago Duran | Multiplatform Developer">
+    <meta property="og:description" content="Portafolio de Desarrollo Multiplataforma (DAM) y Sistemas. Especialista en Java, MAUI y Servidores FiveM.">
     <meta property="og:url" content="https://yagoduran.github.io">
     <meta name="theme-color" content="#000000">
 
@@ -21,7 +20,7 @@
             --text-dim: #888888;
             --accent: #ffffff;
             --border: #333333;
-            --terminal-green: #33ff00; /* Color hacker para el footer */
+            --terminal-green: #33ff00;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -55,20 +54,37 @@
 
         /* HEADER */
         header {
-            height: 35vh;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg)), 
-                        url('https://preview.redd.it/5km5uycgekac1.gif?width=1200&format=mp4&s=12bce94bb42f5fed8c2c6a4f5aaa9afb25f4695e');
-            background-size: cover;
-            background-position: center;
+            height: 15vh; /* Altura reducida y fondo sólido para arreglar la línea blanca */
+            background-color: #000;
             border-bottom: 1px solid var(--border);
         }
 
         .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
 
-        h1 { font-size: 3.5rem; letter-spacing: -2px; line-height: 1; margin-bottom: 0.5rem; margin-top: -3rem; }
+        /* FOTO DE PERFIL Y NOMBRE */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            object-fit: cover;
+            /* REEMPLAZA ESTA URL CON TU FOTO REAL: perfil.jpg */
+            background-image: url('https://via.placeholder.com/150'); 
+            background-size: cover;
+            background-position: center;
+        }
+
+        h1 { font-size: 3.5rem; letter-spacing: -2px; line-height: 1; margin-bottom: 0.5rem; }
         
         /* EFECTO MÁQUINA DE ESCRIBIR */
-        .role-container { height: 1.5rem; margin-bottom: 1.5rem; color: var(--text-dim); font-size: 1.1rem; }
+        .role-container { height: 1.5rem; margin-bottom: 1rem; color: var(--text-dim); font-size: 1.1rem; }
         .typing-text::after { content: '|'; animation: blink 1s infinite; }
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
@@ -87,8 +103,9 @@
             display: inline-block;
         }
 
-        /* TECH STACK */
+        /* TECH STACK Y HERRAMIENTAS */
         .tech-stack { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; }
+        .tools-stack { margin-bottom: 2rem; } /* Sección separada para IDEs */
         .tech-pill {
             display: flex; align-items: center; gap: 8px;
             background: var(--card-bg); border: 1px solid var(--border);
@@ -143,7 +160,22 @@
         .contact-links a { color: var(--text-main); text-decoration: none; margin-right: 15px; }
         .contact-links a:hover { text-decoration: underline; color: var(--terminal-green); }
 
-        @media (max-width: 600px) { h1 { font-size: 2.5rem; } .lang-grid { grid-template-columns: 1fr; } }
+        .vscode-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            margin-top: 10px; opacity: 0.5; /* Opacidad ajustada */
+        }
+        /* Filtro ajustado para que sea blanco puro y visible */
+        .vscode-badge img { width: 14px; filter: brightness(0) invert(1); }
+
+        @media (max-width: 600px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+            h1 { font-size: 2.5rem; margin-top: 0; }
+            .lang-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -152,22 +184,44 @@
 
     <div class="container">
         
-        <h1 class="scan-text">YAGO DURAN</h1>
-        
-        <div class="role-container">
-            > <span class="typing-text" id="typewriter"></span>
+        <div class="profile-header">
+            <div class="profile-img"></div> <div>
+                <h1 class="scan-text">YAGO DURAN</h1>
+                
+                <div class="role-container">
+                    > <span class="typing-text" id="typewriter"></span>
+                </div>
+            </div>
         </div>
 
         <a href="cv.pdf" target="_blank" class="btn-cv">Descargar CV (PDF) ⬇</a>
 
-        <div class="tech-stack">
-            <div class="tech-pill"><img src="https://cdn.simpleicons.org/java/white"> Java</div>
-            <div class="tech-pill"><img src="https://cdn.simpleicons.org/dotnet/white"> MAUI</div>
-            <div class="tech-pill"><img src="https://cdn.simpleicons.org/lua/white"> Lua</div>
-            <div class="tech-pill"><img src="https://cdn.simpleicons.org/android/white"> Android</div>
-            <div class="tech-pill"><img src="https://cdn.simpleicons.org/linux/white"> Linux</div>
-            <div class="tech-pill"><img src="https://cdn.simpleicons.org/cisco/white"> Redes</div>
-        </div>
+        <section>
+            <h2>Stack Tecnológico</h2>
+            <div class="tech-stack">
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/java/white"> Java</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/csharp/white"> C#</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/dotnet/white"> MAUI</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/python/white"> Python</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/sql/white"> SQL</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/html5/white"> HTML5</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/css3/white"> CSS3</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/lua/white"> Lua</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/android/white"> Android</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/linux/white"> Linux</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/cisco/white"> Redes</div>
+            </div>
+        </section>
+
+        <section>
+            <h2>IDEs y Herramientas</h2>
+            <div class="tech-stack tools-stack">
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudiocode/white"> VS Code</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudio/white"> Visual Studio</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/androidstudio/white"> Android Studio</div>
+                <div class="tech-pill"><img src="https://cdn.simpleicons.org/eclipseide/white"> Eclipse</div>
+            </div>
+        </section>
 
         <section>
             <h2>Experiencia Laboral</h2>
@@ -201,8 +255,8 @@
                 </a>
 
                 <a href="#" class="card">
-                    <h3>⚙️ Scripting Systems</h3>
-                    <p>Colección de scripts en Bash y Lua para automatización de servidores y hardening de redes Linux.</p>
+                    <h3>🎮 Servidores de Roleplay en FiveM</h3>
+                    <p>Desarrollo de scripts y sistemas personalizados en Lua para servidores de FiveM, enfocado en la experiencia de roleplay.</p>
                 </a>
             </div>
         </section>
@@ -235,7 +289,7 @@
                     <span class="prompt">yago@portfolio:~$</span> <span class="cmd">whoami</span>
                 </div>
                 <div class="terminal-line" style="margin-bottom: 15px;">
-                    > Yago Duran. 2026. Zubieta, País Vasco.
+                    > Yago Duran. 2026. Beasain, País Vasco.
                 </div>
                 
                 <div class="terminal-line">
@@ -244,10 +298,12 @@
                 <div class="contact-links">
                     > <a href="https://github.com/yagoduran">GitHub</a>
                     <a href="#">LinkedIn</a>
-                    <a href="mailto:tu-email@gmail.com">Email</a>
+                    <a href="mailto:yagoduran.tolosaldea@gmail.com">Email</a> 
                 </div>
                 <br>
-                <div style="opacity: 0.5; font-size: 0.7rem;">Hecho con <img src="https://cdn.simpleicons.org/visualstudiocode/white" style="width: 10px; vertical-align: middle;"> VS Code</div>
+                <div class="vscode-badge">
+                    Hecho con <img src="https://cdn.simpleicons.org/visualstudiocode/white" alt="VS Code"> VS Code
+                </div>
             </div>
         </footer>
 
@@ -255,7 +311,8 @@
 
     <script>
         const textElement = document.getElementById('typewriter');
-        const phrases = ['Desarrollador Multiplataforma.', 'Técnico de Sistemas.', 'Amante de las Redes.', 'Yago Duran.'];
+        // Lista de frases actualizada: sin "Técnico de Sistemas" ni "Yago Duran"
+        const phrases = ['Desarrollador Multiplataforma.', 'Amante de las Redes.'];
         let phraseIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
@@ -290,7 +347,8 @@
         // EASTER EGG CONSOLA
         console.log("%c¡Hola! 👋", "color: #33ff00; font-size: 20px; font-weight: bold;");
         console.log("%cSi estás leyendo esto, probablemente te interese mi código.", "color: #ffffff;");
-        console.log("%cEscríbeme y charlamos: tu-email@gmail.com", "color: #aaaaaa;");
+        // Correo actualizado aquí también
+        console.log("%cEscríbeme y charlamos: yagoduran.tolosaldea@gmail.com", "color: #aaaaaa;"); 
     </script>
 
 </body>
