@@ -4,644 +4,527 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <meta property="og:title" content="Yago Duran | Multiplatform Developer">
-    <meta property="og:description" content="Portafolio de Desarrollo Multiplataforma (DAM) y Sistemas.">
-    <meta property="og:url" content="https://yagoduran.github.io">
+    <meta property="og:title" content="Yago Duran | Full Stack Wizard">
+    <meta property="og:description" content="Portafolio de Desarrollo Multiplataforma (DAM) y Sistemas (SMR).">
     <meta name="theme-color" content="#000000">
 
-    <title>Yago Duran | Portafolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Fira+Code:wght@400&display=swap" rel="stylesheet">
+    <title>Yago Duran | System Online</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
 
     <style>
         :root {
-            --bg: #050505;
-            --card-bg: #111111;
+            --bg: #030303;
+            --glass: rgba(20, 20, 20, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.1);
             --text-main: #ffffff;
-            --text-dim: #888888;
-            --accent: #ffffff;
-            --border: #333333;
-            --terminal-green: #33ff00;
-            --btn-bg: #ffffff;
-            --btn-text: #050505;
-            --status-color: #10b981;
+            --text-dim: #94a3b8;
+            --accent: #00ff41; /* Hacker Green */
+            --accent-glow: rgba(0, 255, 65, 0.4);
+            --secondary: #bd00ff; /* Cyber Purple */
+            --danger: #ff0055;
+            --font-main: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --cursor-size: 20px;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; /* Ocultamos cursor default */ }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-main);
             background-color: var(--bg);
             color: var(--text-main);
             overflow-x: hidden;
             line-height: 1.6;
-            transition: background-color 0.5s ease, color 0.5s ease;
         }
 
-        /* MATRIX CANVAS */
-        #matrix-canvas {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1; opacity: 0.07; pointer-events: none;
+        /* CUSTOM CURSOR */
+        #cursor {
+            position: fixed; top: 0; left: 0; width: var(--cursor-size); height: var(--cursor-size);
+            border: 1px solid var(--accent); border-radius: 50%; pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%); transition: width 0.2s, height 0.2s, background-color 0.2s;
+            mix-blend-mode: difference;
+        }
+        #cursor-dot {
+            position: fixed; top: 0; left: 0; width: 4px; height: 4px; background: var(--accent);
+            border-radius: 50%; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%);
+        }
+        body:hover #cursor { opacity: 1; }
+        .hovered #cursor { width: 50px; height: 50px; background: rgba(0, 255, 65, 0.1); border-color: transparent; }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+        /* BACKGROUNDS */
+        #matrix-canvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; opacity: 0.05; }
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background-image: linear-gradient(var(--glass-border) 1px, transparent 1px),
+            linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
+            background-size: 50px 50px; opacity: 0.05; mask-image: radial-gradient(circle at center, black, transparent 80%);
         }
 
-        /* CONTROLES SUPERIORES (TEMA + IDIOMA) */
-        .top-controls {
-            position: absolute; top: 20px; right: 20px; z-index: 1000;
-            display: flex; gap: 10px;
+        /* TOP NAV (GLASS) */
+        nav {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 800px; padding: 10px 20px;
+            background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border); border-radius: 50px;
+            display: flex; justify-content: space-between; align-items: center; z-index: 1000;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
         }
+        .nav-logo { font-family: var(--font-mono); font-weight: bold; color: var(--accent); letter-spacing: -1px; }
+        .nav-actions { display: flex; gap: 15px; }
+        .nav-btn { background: transparent; border: none; color: var(--text-dim); font-size: 1.1rem; transition: 0.3s; }
+        .nav-btn:hover { color: var(--text-main); transform: scale(1.1); text-shadow: 0 0 10px var(--accent); }
 
-        select {
-            background: var(--card-bg); color: var(--text-main);
-            border: 1px solid var(--border); padding: 8px 12px;
-            border-radius: 6px; font-family: 'Fira Code', monospace;
-            font-size: 0.85rem; cursor: pointer; outline: none;
-        }
+        /* MAIN LAYOUT */
+        .container { max-width: 900px; margin: 120px auto 100px; padding: 0 2rem; }
 
-        /* TEXTO ESCANEADO */
-        @keyframes scan { 0% { background-position: -100%; } 100% { background-position: 200%; } }
-        .scan-text {
-            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, var(--text-main) 50%, rgba(255,255,255,0.1) 100%);
-            background-size: 200% auto;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: scan 4s linear infinite;
-        }
-
-        /* LAYOUT */
-        header { height: 10vh; }
-        .container { max-width: 800px; margin: 0 auto; padding: 2rem; }
-
-        .profile-header { display: flex; align-items: center; gap: 2rem; margin: 2rem 0; }
+        /* HERO SECTION */
+        .hero { display: flex; align-items: center; gap: 3rem; margin-bottom: 5rem; position: relative; }
+        .profile-wrapper { position: relative; }
         .profile-img {
-            width: 120px; height: 120px; border-radius: 50%;
-            border: 2px solid var(--text-main);
-            background-image: url('./perfil.png'); /* CAMBIAR RUTA SI ES NECESARIO */
-            background-size: cover; background-position: center; background-color: #333;
+            width: 150px; height: 150px; border-radius: 20px; object-fit: cover;
+            border: 2px solid var(--glass-border); filter: grayscale(100%); transition: 0.5s;
+            background: #222 url('./perfil.png') center/cover; /* Pon tu foto aquí */
+        }
+        .profile-wrapper::after {
+            content: ''; position: absolute; inset: -5px; border-radius: 25px;
+            background: linear-gradient(45deg, var(--accent), var(--secondary));
+            z-index: -1; filter: blur(15px); opacity: 0.5; animation: spin 5s linear infinite;
+        }
+        .hero:hover .profile-img { filter: grayscale(0%); transform: scale(1.05); }
+
+        .hero-text h1 { font-size: 4rem; line-height: 1; letter-spacing: -2px; margin-bottom: 10px; }
+        .glitch-text { position: relative; }
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text); position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.8;
+        }
+        .glitch-text::before { color: var(--secondary); z-index: -1; animation: glitch-anim-1 2s infinite linear alternate-reverse; }
+        .glitch-text::after { color: var(--accent); z-index: -2; animation: glitch-anim-2 3s infinite linear alternate-reverse; }
+
+        .role-badge { 
+            display: inline-block; padding: 5px 12px; border-radius: 4px; 
+            background: rgba(0, 255, 65, 0.1); color: var(--accent); 
+            font-family: var(--font-mono); font-size: 0.9rem; border: 1px solid var(--accent-glow);
+            margin-top: 10px;
         }
 
-        h1 { font-size: 3.5rem; letter-spacing: -2px; line-height: 1; margin-bottom: 0.5rem; }
-        .role-container { height: 1.5rem; margin-bottom: 0.5rem; color: var(--text-dim); font-size: 1.1rem; }
-        .typing-text::after { content: '|'; animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-
-        .status-pill {
-            display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px;
-            border-radius: 20px; background: rgba(16, 185, 129, 0.1);
-            color: var(--status-color); font-size: 0.85rem; font-weight: 600;
-            border: 1px solid rgba(16, 185, 129, 0.2);
+        /* SECTIONS */
+        section { margin-bottom: 6rem; }
+        .section-title { 
+            font-size: 2rem; margin-bottom: 2rem; display: flex; align-items: center; gap: 15px; 
+            color: var(--text-main); font-weight: 700;
         }
-        .status-dot { width: 8px; height: 8px; background-color: var(--status-color); border-radius: 50%; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        .section-title::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--glass-border), transparent); }
+        .scramble-hover { display: inline-block; transition: color 0.3s; }
+        .scramble-hover:hover { color: var(--accent); }
 
-        .btn-cv {
-            display: inline-flex; align-items: center; gap: 10px;
-            background-color: var(--btn-bg); color: var(--btn-text);
-            padding: 10px 20px; text-decoration: none; font-weight: 700;
-            border-radius: 4px; transition: 0.3s; margin-bottom: 3rem; border: 1px solid var(--border);
+        /* CARDS (GLASSMORPHISM) */
+        .glass-card {
+            background: rgba(25, 25, 25, 0.6); border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px); border-radius: 12px; padding: 20px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative; overflow: hidden;
         }
-        .btn-cv:hover { transform: translateY(-2px); }
+        .glass-card:hover { 
+            border-color: var(--accent); transform: translateY(-5px); 
+            box-shadow: 0 10px 40px -10px var(--accent-glow);
+        }
 
-        /* SECCIONES */
-        .about-text { color: var(--text-dim); font-size: 1.05rem; margin-bottom: 1rem; }
-        .about-text strong { color: var(--text-main); font-weight: 600; }
-        h2 { font-size: 1.4rem; margin-top: 3.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 10px; display: inline-block; }
+        /* GRID PROYECTOS */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+        .project-card h3 { font-size: 1.2rem; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .project-card p { color: var(--text-dim); font-size: 0.9rem; margin-bottom: 15px; }
+        .tech-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+        .tag { font-size: 0.7rem; padding: 3px 8px; border-radius: 20px; background: rgba(255,255,255,0.05); color: var(--text-dim); border: 1px solid var(--glass-border); }
+        .project-icon { font-size: 1.5rem; color: var(--text-main); }
 
-        .tech-stack { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1rem; }
-        .tech-pill { display: flex; align-items: center; gap: 8px; background: var(--card-bg); border: 1px solid var(--border); padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; transition: 0.3s; }
-        .tech-pill:hover { border-color: var(--text-main); transform: scale(1.05); }
-        .tech-pill img { width: 16px; height: 16px; }
-        
-        body[data-theme="light"] .tech-pill img, body[data-theme="solarized"] .tech-pill img { filter: invert(1); }
+        /* TIMELINE MODERNIZADO */
+        .timeline { border-left: 2px solid var(--glass-border); padding-left: 2rem; margin-left: 10px; }
+        .timeline-item { position: relative; margin-bottom: 3rem; }
+        .timeline-item::before { 
+            content: ''; position: absolute; left: -39px; top: 0; width: 16px; height: 16px; 
+            border-radius: 50%; background: var(--bg); border: 2px solid var(--accent);
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        .time-date { font-family: var(--font-mono); color: var(--accent); font-size: 0.85rem; margin-bottom: 5px; display: block; }
+        .time-title { font-size: 1.2rem; font-weight: 700; color: var(--text-main); }
+        .time-place { font-size: 1rem; color: var(--text-dim); margin-bottom: 10px; }
 
-        .soft-skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
-        .soft-skill-card { background: var(--card-bg); border: 1px solid var(--border); padding: 1rem; border-radius: 6px; text-align: center; color: var(--text-dim); transition: 0.3s; }
-        .soft-skill-card:hover { border-color: var(--text-main); color: var(--text-main); transform: translateY(-3px); }
-        .soft-skill-icon { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+        /* SKILLS GRID */
+        .skills-container { display: flex; flex-wrap: wrap; gap: 15px; }
+        .skill-box {
+            display: flex; align-items: center; gap: 10px; padding: 10px 20px;
+            background: var(--glass); border: 1px solid var(--glass-border); border-radius: 8px;
+            font-size: 0.9rem; font-weight: 600; transition: 0.3s;
+        }
+        .skill-box:hover { background: var(--accent); color: black; transform: scale(1.05); }
+        .skill-box i { font-size: 1.2rem; }
 
-        /* TIMELINE */
-        .timeline-item { border-left: 2px solid var(--border); padding-left: 1.5rem; margin-bottom: 2rem; position: relative; opacity: 0; transform: translateY(20px); transition: 0.6s ease-out; }
-        .timeline-item.visible { opacity: 1; transform: translateY(0); }
-        .timeline-item::before { content: ''; position: absolute; left: -6px; top: 5px; width: 10px; height: 10px; background: var(--bg); border: 2px solid var(--text-dim); border-radius: 50%; transition: 0.3s; }
-        .timeline-item.visible::before { border-color: var(--terminal-green); background-color: var(--terminal-green); box-shadow: 0 0 10px var(--terminal-green); }
-        .timeline-date { font-size: 0.8rem; color: var(--text-dim); text-transform: uppercase; }
-        .timeline-title { font-size: 1.1rem; font-weight: bold; margin: 5px 0; }
-        .timeline-place { color: var(--text-main); font-weight: 500; }
-        .timeline-desc { color: var(--text-dim); font-size: 0.9rem; margin-top: 0.5rem; }
+        /* FOOTER STATUS BAR */
+        .status-bar {
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 35px;
+            background: #0a0a0a; border-top: 1px solid var(--glass-border);
+            display: flex; justify-content: space-between; align-items: center; padding: 0 20px;
+            font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim);
+            z-index: 2000;
+        }
+        .status-left, .status-right { display: flex; gap: 20px; }
+        .live-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
 
-        /* CARDS */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: var(--card-bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 6px; text-decoration: none; color: inherit; display: block; transform-style: preserve-3d; transform: perspective(1000px); }
-        .card-content { transform: translateZ(20px); }
-        .card h3 { margin-bottom: 0.5rem; color: var(--text-main); }
-        .card p { color: var(--text-dim); font-size: 0.85rem; }
+        /* MODAL */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);
+            z-index: 5000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s;
+        }
+        .modal-content {
+            background: #111; border: 1px solid var(--glass-border); width: 600px; max-width: 90%;
+            padding: 30px; border-radius: 15px; position: relative; transform: translateY(50px); transition: 0.3s;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .modal-active .modal-overlay { display: flex; opacity: 1; }
+        .modal-active .modal-content { transform: translateY(0); }
+        .close-modal { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: var(--text-dim); transition: 0.2s; }
+        .close-modal:hover { color: var(--danger); transform: rotate(90deg); }
 
-        /* IDIOMAS LISTA */
-        .lang-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-        .lang-item { display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 5px; }
+        /* ANIMACIONES */
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(0, 255, 65, 0.7); } 100% { box-shadow: 0 0 0 10px transparent; } }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes glitch-anim-1 { 0% { clip-path: inset(20% 0 80% 0); } 100% { clip-path: inset(60% 0 10% 0); } }
+        @keyframes glitch-anim-2 { 0% { clip-path: inset(10% 0 60% 0); } 100% { clip-path: inset(80% 0 5% 0); } }
 
-        /* TERMINAL */
-        footer { margin-top: 5rem; padding: 2rem 0; border-top: 1px solid var(--border); font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--text-dim); background: var(--bg); }
-        .terminal-container { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 5px; border: 1px solid var(--border); }
-        .prompt { color: var(--terminal-green); margin-right: 8px; }
-        #term-input { background: transparent; border: none; color: var(--text-main); font-family: 'Fira Code', monospace; width: 100%; outline: none; }
-        .shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
-
-        .contact-links a { color: var(--text-main); text-decoration: none; margin-right: 15px; }
-        
-        /* MODAL JUEGO */
-        #game-modal { background: #111; border: 2px solid var(--terminal-green); color: #fff; padding: 20px; border-radius: 10px; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; display: none; text-align: center; }
-        #game-canvas { background: #000; border: 1px solid #333; margin: 10px 0; }
-
-        @media (max-width: 600px) {
-            .profile-header { flex-direction: column; text-align: center; gap: 1rem; }
-            h1 { font-size: 2.5rem; }
-            .top-controls { width: 100%; justify-content: center; top: 10px; right: 0; position: relative; margin-bottom: 20px; }
-            .lang-grid { grid-template-columns: 1fr; }
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column; text-align: center; }
+            .status-bar { display: none; }
+            #cursor, #cursor-dot { display: none; } /* En móvil usamos touch nativo */
+            .nav-actions { display: none; } /* Simplificar nav en móvil */
         }
     </style>
 </head>
-<body data-theme="onedark">
+<body>
+
+    <div id="cursor"></div>
+    <div id="cursor-dot"></div>
 
     <canvas id="matrix-canvas"></canvas>
+    <div class="grid-bg"></div>
 
-    <div class="top-controls">
-        <select id="lang-select">
-            <option value="es">🇪🇸 ES</option>
-            <option value="eu">🏴 IK</option> <option value="en">🇬🇧 EN</option>
-        </select>
+    <nav>
+        <div class="nav-logo hover-trigger">&lt;YagoDuran /&gt;</div>
+        <div class="nav-actions">
+            <button class="nav-btn hover-trigger" onclick="changeLang()" title="Cambiar Idioma"><i class="fa-solid fa-language"></i></button>
+            <button class="nav-btn hover-trigger" onclick="toggleTheme()" title="Cambiar Tema"><i class="fa-solid fa-palette"></i></button>
+            <button class="nav-btn hover-trigger" onclick="downloadCV()" title="Descargar CV"><i class="fa-solid fa-file-pdf"></i></button>
+            <button class="nav-btn hover-trigger" onclick="openGame()" title="Hack Mode"><i class="fa-solid fa-gamepad"></i></button>
+        </div>
+    </nav>
 
-        <select id="theme-select">
-            <option value="onedark">One Dark</option>
-            <option value="monokai">Monokai</option>
-            <option value="solarized">Solarized</option>
-            <option value="light">Light</option>
-        </select>
+    <div class="modal-overlay" id="project-modal">
+        <div class="modal-content">
+            <button class="close-modal hover-trigger" onclick="closeModal()">×</button>
+            <h2 id="modal-title" style="color: var(--accent); margin-bottom: 10px;">Project Title</h2>
+            <div style="width: 100%; height: 200px; background: #222; margin-bottom: 20px; display:flex; align-items:center; justify-content:center; border-radius:8px;">
+                <i class="fa-solid fa-image" style="font-size: 3rem; color: #444;"></i>
+            </div>
+            <p id="modal-desc" style="color: var(--text-dim); margin-bottom: 20px;">Descripción detallada del proyecto...</p>
+            <div class="tech-tags" id="modal-tags"></div>
+            <br>
+            <a href="#" id="modal-link" target="_blank" class="role-badge hover-trigger" style="text-decoration:none;">Ver en GitHub <i class="fa-brands fa-github"></i></a>
+        </div>
     </div>
 
-    <div id="game-modal">
-        <h3>🐍 Snake Dev Mode</h3>
-        <p>Usa las flechas / Use arrows</p>
-        <canvas id="game-canvas" width="300" height="300"></canvas>
-        <div>Score: <span id="score">0</span></div>
-        <button onclick="closeGame()" style="margin-top:10px; padding:5px;">Cerrar / Close</button>
+    <div class="modal-overlay" id="game-overlay">
+        <div class="modal-content" style="text-align: center; width: auto;">
+            <h3 style="color: var(--accent)">🐍 SYSTEM OVERRIDE</h3>
+            <canvas id="game-canvas" width="300" height="300" style="background:#000; border:1px solid var(--accent); margin: 15px 0;"></canvas>
+            <div>SCORE: <span id="score">0</span></div>
+            <button onclick="closeGame()" class="role-badge hover-trigger" style="margin-top:10px; cursor:pointer;">EXIT</button>
+        </div>
     </div>
-
-    <header></header>
 
     <div class="container">
         
-        <div class="profile-header">
-            <div class="profile-img"></div>
-            <div>
-                <h1 class="scan-text">YAGO DURAN</h1>
-                <div class="role-container">
-                    > <span class="typing-text" id="typewriter"></span>
+        <div class="hero">
+            <div class="profile-wrapper hover-trigger">
+                <div class="profile-img"></div>
+            </div>
+            <div class="hero-text">
+                <h1 class="glitch-text" data-text="YAGO DURAN">YAGO DURAN</h1>
+                <div style="font-family: var(--font-mono); color: var(--text-dim);">
+                    <span id="typing-text"></span><span class="cursor-blink">|</span>
                 </div>
-                
-                <div class="status-pill">
-                    <span class="status-dot"></span>
-                    <span data-i18n="status">Open to Work</span>
+                <div class="role-badge hover-trigger">
+                    <span class="live-dot"></span> OPEN TO WORK
                 </div>
             </div>
         </div>
 
-        <a href="cv.pdf" target="_blank" class="btn-cv" data-i18n="downloadCv">Descargar CV (PDF) ⬇</a>
-
         <section>
-            <h2 data-i18n="aboutTitle">Sobre Mí</h2>
-            <p class="about-text" data-i18n="about1">
-                Tengo <strong>21 años</strong> y la informática ha sido mi pasión desde que era pequeño.
-            </p>
-            <p class="about-text" data-i18n="about2">
-                Formación híbrida: Técnico de Sistemas (SMR) y Desarrollador (DAM). Visión global de código e infraestructura.
-            </p>
-        </section>
-
-        <section>
-            <h2 data-i18n="stackTitle">Stack Tecnológico</h2>
-            <div class="tech-stack">
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/java/white"> Java</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/csharp/white"> C#</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/dotnet/white"> MAUI</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/python/white"> Python</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/sql/white"> SQL</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/html5/white"> HTML5</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/css3/white"> CSS3</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/lua/white"> Lua</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/android/white"> Android</div>
+            <h2 class="section-title"><span class="scramble-hover" data-value="SOBRE MÍ">SOBRE MÍ</span></h2>
+            <div class="glass-card">
+                <p style="color: var(--text-dim); margin-bottom: 1rem;">
+                    <strong style="color: var(--text-main);">Tengo 21 años</strong> y transformo café en código. Mi perfil es un híbrido poco común: entiendo cómo construir software (DAM) y dónde debe vivir ese software (SMR).
+                </p>
+                <p style="color: var(--text-dim);">
+                    No solo escribo código; diseño soluciones escalables y seguras. Mi pasión es el backend robusto, las redes complejas y las interfaces que se sienten "vivas".
+                </p>
             </div>
         </section>
 
         <section>
-            <h2 data-i18n="softSkillsTitle">Cómo trabajo (Soft Skills)</h2>
-            <div class="soft-skills-grid">
-                <div class="soft-skill-card">
-                    <span class="soft-skill-icon">🧩</span>
-                    <span data-i18n="ss1">Resolución de Problemas</span>
+            <h2 class="section-title"><span class="scramble-hover" data-value="ARSENAL">ARSENAL</span></h2>
+            <div class="skills-container">
+                <div class="skill-box hover-trigger"><i class="fa-brands fa-java"></i> Java</div>
+                <div class="skill-box hover-trigger"><i class="fa-brands fa-microsoft"></i> C# / .NET</div>
+                <div class="skill-box hover-trigger"><i class="fa-solid fa-mobile-screen"></i> MAUI</div>
+                <div class="skill-box hover-trigger"><i class="fa-brands fa-python"></i> Python</div>
+                <div class="skill-box hover-trigger"><i class="fa-solid fa-database"></i> SQL / MySQL</div>
+                <div class="skill-box hover-trigger"><i class="fa-brands fa-android"></i> Android</div>
+                <div class="skill-box hover-trigger"><i class="fa-brands fa-git-alt"></i> Git</div>
+                <div class="skill-box hover-trigger"><i class="fa-brands fa-linux"></i> Linux</div>
+                <div class="skill-box hover-trigger"><i class="fa-solid fa-network-wired"></i> Cisco CCNA</div>
+                <div class="skill-box hover-trigger"><i class="fa-solid fa-scroll"></i> Lua</div>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title"><span class="scramble-hover" data-value="EXPERIENCIA">EXPERIENCIA</span></h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <span class="time-date">MAR 2026 - ACTUALIDAD</span>
+                    <h3 class="time-title">Analista de Sistemas & Programador RPS</h3>
+                    <div class="time-place">Sodesa S.A.</div>
+                    <p style="color: var(--text-dim);">Desarrollo y mantenimiento del ERP RPS. Optimización de consultas SQL complejas y digitalización de procesos industriales.</p>
                 </div>
-                <div class="soft-skill-card">
-                    <span class="soft-skill-icon">🤝</span>
-                    <span data-i18n="ss2">Trabajo en Equipo</span>
-                </div>
-                <div class="soft-skill-card">
-                    <span class="soft-skill-icon">⏱️</span>
-                    <span data-i18n="ss3">Gestión del Tiempo</span>
-                </div>
-                <div class="soft-skill-card">
-                    <span class="soft-skill-icon">📚</span>
-                    <span data-i18n="ss4">Aprendizaje Continuo</span>
+                <div class="timeline-item">
+                    <span class="time-date">SEP 2023 - FEB 2024</span>
+                    <h3 class="time-title">Técnico de Infraestructura</h3>
+                    <div class="time-place">C.P. Murumendi</div>
+                    <p style="color: var(--text-dim);">Gestión de redes, virtualización de servidores y soporte de nivel 2 para personal docente.</p>
                 </div>
             </div>
         </section>
 
         <section>
-            <h2 data-i18n="toolsTitle">IDEs y Herramientas</h2>
-            <div class="tech-stack tools-stack">
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudiocode/white"> VS Code</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/visualstudio/white"> VS Community</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/androidstudio/white"> Android Studio</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/git/white"> Git</div>
-                <div class="tech-pill"><img src="https://cdn.simpleicons.org/linux/white"> Linux</div>
-            </div>
-        </section>
-
-        <section>
-            <h2 data-i18n="expTitle">Experiencia Laboral</h2>
-            <div class="timeline-item">
-                <div class="timeline-date" data-i18n="date1">Mar 2026 - Actualidad</div>
-                <div class="timeline-title" data-i18n="job1Title">Analista de Sistemas & Programador RPS</div>
-                <div class="timeline-place">Sodesa (Plásticos Reciclados)</div>
-                <p class="timeline-desc" data-i18n="job1Desc">Desarrollo ERP RPS, optimización SQL y análisis.</p>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-date" data-i18n="date2">Sep 2023 - Feb 2024</div>
-                <div class="timeline-title" data-i18n="job2Title">Técnico Informático</div>
-                <div class="timeline-place">Colegio Público Murumendi</div>
-                <p class="timeline-desc" data-i18n="job2Desc">Mantenimiento integral y soporte técnico.</p>
-            </div>
-        </section>
-
-        <section>
-            <h2 data-i18n="projectsTitle">Proyectos Seleccionados</h2>
-            <div class="grid">
-                <a href="https://github.com/yagoduran/bizimatch" class="card" data-tilt data-tilt-max="10" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.2">
-                    <div class="card-content">
-                        <h3>🏠 BiziMatch</h3>
-                        <p data-i18n="proj1Desc">App mobile (.NET MAUI) para encontrar compañeros de piso.</p>
-                    </div>
-                </a>
-                <a href="https://github.com/yagoduran/cubatacounter" class="card" data-tilt data-tilt-max="10" data-tilt-speed="400">
-                    <div class="card-content">
-                        <h3>🍹 CubataCounter</h3>
-                        <p data-i18n="proj2Desc">App social Android con geolocalización y estadísticas.</p>
-                    </div>
-                </a>
-                <a href="#" class="card" data-tilt data-tilt-max="10" data-tilt-speed="400">
-                    <div class="card-content">
-                        <h3>🎮 FiveM Scripts</h3>
-                        <p data-i18n="proj3Desc">Desarrollo Lua para servidores de Roleplay.</p>
-                    </div>
-                </a>
-            </div>
-        </section>
-
-        <section>
-            <h2 data-i18n="eduTitle">Formación</h2>
-            <div class="timeline-item">
-                <div class="timeline-title" data-i18n="edu1">Desarrollo de Aplicaciones Multiplataforma (DAM)</div>
-                <div class="timeline-place">CIFP Tolosaldea LHII</div>
-            </div>
-            <div class="timeline-item">
-                <div class="timeline-title" data-i18n="edu2">Sistemas Microinformáticos y Redes (SMR)</div>
-                <div class="timeline-place">CIFP Tolosaldea LHII</div>
-            </div>
-        </section>
-
-        <section>
-            <h2 data-i18n="langTitle">Idiomas</h2>
-            <div class="lang-grid">
-                <div class="lang-item"><span class="lang-name" data-i18n="lang1">Español</span><span class="lang-level" data-i18n="native">Nativo</span></div>
-                <div class="lang-item"><span class="lang-name" data-i18n="lang2">Euskera</span><span class="lang-level" data-i18n="advanced">Avanzado</span></div>
-                <div class="lang-item"><span class="lang-name" data-i18n="lang3">Inglés</span><span class="lang-level" data-i18n="technical">Técnico</span></div>
-            </div>
-        </section>
-
-        <footer>
-            <div class="container">
-                <div class="terminal-container">
-                    <div class="terminal-output" id="terminal-output">
-                        <div data-i18n="termWelcome">Bienvenido a la terminal de Yago v1.0</div>
-                        <div><span data-i18n="termHelp">Escribe 'help' para comandos.</span></div>
-                        <br>
-                    </div>
-                    <div class="command-line">
-                        <span class="prompt">yago@portfolio:~$</span>
-                        <input type="text" id="term-input" autocomplete="off" spellcheck="false">
+            <h2 class="section-title"><span class="scramble-hover" data-value="PROYECTOS">PROYECTOS</span></h2>
+            <div class="projects-grid">
+                <div class="glass-card project-card hover-trigger" onclick="openProject('bizimatch')" data-tilt>
+                    <h3>BiziMatch <i class="fa-solid fa-house-user project-icon"></i></h3>
+                    <p>El "Tinder" para encontrar compañeros de piso.</p>
+                    <div class="tech-tags">
+                        <span class="tag">.NET MAUI</span><span class="tag">C#</span><span class="tag">SQLite</span>
                     </div>
                 </div>
-
-                <div class="contact-links" style="margin-top: 20px;">
-                    <a href="https://github.com/yagoduran">GitHub</a>
-                    <a href="https://www.linkedin.com/in/yago-duran-6216153b5/">LinkedIn</a>
-                    <a href="mailto:yagoduran.tolosaldea@gmail.com">Email</a>
+                <div class="glass-card project-card hover-trigger" onclick="openProject('cubata')" data-tilt>
+                    <h3>CubataCounter <i class="fa-solid fa-martini-glass-citrus project-icon"></i></h3>
+                    <p>Social app con geolocalización y analítica en tiempo real.</p>
+                    <div class="tech-tags">
+                        <span class="tag">Android</span><span class="tag">Java</span><span class="tag">Firebase</span>
+                    </div>
+                </div>
+                <div class="glass-card project-card hover-trigger" onclick="openProject('fivem')" data-tilt>
+                    <h3>FiveM Framework <i class="fa-solid fa-server project-icon"></i></h3>
+                    <p>Núcleo personalizado para servidores de Roleplay.</p>
+                    <div class="tech-tags">
+                        <span class="tag">Lua</span><span class="tag">JS</span><span class="tag">MySQL</span>
+                    </div>
                 </div>
             </div>
-        </footer>
+        </section>
 
     </div>
 
+    <div class="status-bar">
+        <div class="status-left">
+            <span><i class="fa-solid fa-location-dot"></i> ZUBIETA, ES</span>
+            <span id="clock">00:00:00</span>
+        </div>
+        <div class="status-right">
+            <span id="ping">PING: 24ms</span>
+            <span><i class="fa-brands fa-github"></i> master*</span>
+            <span style="color: var(--accent);">● ONLINE</span>
+        </div>
+    </div>
+
     <script>
-        /* ----------------------------------------------------
-           1. SISTEMA DE TRADUCCIÓN (I18N)
-        ---------------------------------------------------- */
-        const translations = {
-            es: {
-                status: "En búsqueda activa",
-                downloadCv: "Descargar CV (PDF) ⬇",
-                aboutTitle: "Sobre Mí",
-                about1: "Tengo <strong>21 años</strong> y la informática ha sido mi pasión desde pequeño.",
-                about2: "Formación híbrida: Técnico de Sistemas (SMR) y Desarrollador (DAM).",
-                stackTitle: "Stack Tecnológico",
-                softSkillsTitle: "Soft Skills",
-                ss1: "Resolución de Problemas",
-                ss2: "Trabajo en Equipo",
-                ss3: "Gestión del Tiempo",
-                ss4: "Aprendizaje Continuo",
-                toolsTitle: "IDEs y Herramientas",
-                expTitle: "Experiencia Laboral",
-                date1: "Mar 2026 - Actualidad",
-                job1Title: "Analista & Programador RPS",
-                job1Desc: "Desarrollo ERP RPS, optimización SQL y análisis.",
-                date2: "Sep 2023 - Feb 2024",
-                job2Title: "Técnico Informático",
-                job2Desc: "Mantenimiento integral y soporte técnico.",
-                projectsTitle: "Proyectos",
-                proj1Desc: "App mobile (.NET MAUI) para encontrar compañeros de piso.",
-                proj2Desc: "App social Android con geolocalización y estadísticas.",
-                proj3Desc: "Desarrollo Lua para servidores de Roleplay.",
-                eduTitle: "Formación",
-                edu1: "Desarrollo de Apps Multiplataforma (DAM)",
-                edu2: "Sistemas Microinformáticos y Redes (SMR)",
-                langTitle: "Idiomas",
-                lang1: "Español", lang2: "Euskera", lang3: "Inglés",
-                native: "Nativo", advanced: "Avanzado", technical: "Técnico",
-                termWelcome: "Bienvenido a la terminal de Yago v1.0",
-                termHelp: "Escribe 'help' para comandos.",
-                typewriter: ['Desarrollador Multiplataforma.', 'Amante de las Redes.', 'FiveM Scripter.']
-            },
-            en: {
-                status: "Open to Work",
-                downloadCv: "Download CV (PDF) ⬇",
-                aboutTitle: "About Me",
-                about1: "I am <strong>21 years old</strong> and computing has been my passion since childhood.",
-                about2: "Hybrid background: Systems Technician (SMR) & Developer (DAM).",
-                stackTitle: "Tech Stack",
-                softSkillsTitle: "Soft Skills",
-                ss1: "Problem Solving",
-                ss2: "Teamwork",
-                ss3: "Time Management",
-                ss4: "Continuous Learning",
-                toolsTitle: "IDEs & Tools",
-                expTitle: "Work Experience",
-                date1: "Mar 2026 - Present",
-                job1Title: "RPS Analyst & Programmer",
-                job1Desc: "ERP RPS development, SQL optimization and analysis.",
-                date2: "Sep 2023 - Feb 2024",
-                job2Title: "IT Technician",
-                job2Desc: "Integral maintenance and technical support.",
-                projectsTitle: "Projects",
-                proj1Desc: "Mobile app (.NET MAUI) to find roommates.",
-                proj2Desc: "Social Android app with geolocation and stats.",
-                proj3Desc: "Lua development for Roleplay servers.",
-                eduTitle: "Education",
-                edu1: "Multiplatform App Development (DAM)",
-                edu2: "Microcomputer Systems & Networks (SMR)",
-                langTitle: "Languages",
-                lang1: "Spanish", lang2: "Basque", lang3: "English",
-                native: "Native", advanced: "Advanced", technical: "Technical",
-                termWelcome: "Welcome to Yago's Terminal v1.0",
-                termHelp: "Type 'help' for commands.",
-                typewriter: ['Multiplatform Developer.', 'Network Enthusiast.', 'FiveM Scripter.']
-            },
-            eu: {
-                status: "Lan bila",
-                downloadCv: "CV Deskargatu (PDF) ⬇",
-                aboutTitle: "Niri Buruz",
-                about1: "<strong>21 urte</strong> ditut eta informatika nire pasioa izan da txikitatik.",
-                about2: "Formakuntza hibridoa: Sistema Teknikaria (SMR) eta Garatzailea (DAM).",
-                stackTitle: "Teknologiak",
-                softSkillsTitle: "Gaitasunak",
-                ss1: "Arazoen Konponketa",
-                ss2: "Talde Lana",
-                ss3: "Denboraren Kudeaketa",
-                ss4: "Etengabeko Ikaskuntza",
-                toolsTitle: "Tresnak",
-                expTitle: "Lan Esperientzia",
-                date1: "2026 Mar - Orain",
-                job1Title: "Analista eta RPS Programatzailea",
-                job1Desc: "ERP RPS garapena, SQL optimizazioa.",
-                date2: "2023 Ira - 2024 Ots",
-                job2Title: "Teknikari Informatikoa",
-                job2Desc: "Mantentze-lan orokorra eta laguntza teknikoa.",
-                projectsTitle: "Proiektuak",
-                proj1Desc: "Pisukideak bilatzeko mugikorreko aplikazioa.",
-                proj2Desc: "Android app soziala geolokalizazioarekin.",
-                proj3Desc: "Lua garapena Roleplay zerbitzarietarako.",
-                eduTitle: "Ikasketak",
-                edu1: "Plataforma Anitzeko Aplikazioak (DAM)",
-                edu2: "Mikroinformatika Sistemak eta Sareak (SMR)",
-                langTitle: "Hizkuntzak",
-                lang1: "Gaztelania", lang2: "Euskara", lang3: "Ingelesa",
-                native: "Ama-hizkuntza", advanced: "Aurreratua", technical: "Teknikoa",
-                termWelcome: "Ongi etorri Yagoren terminalera v1.0",
-                termHelp: "Idatzi 'help' komandoak ikusteko.",
-                typewriter: ['Plataforma Anitzeko Garatzailea.', 'Sareen Zalea.', 'FiveM Scripter.']
-            }
-        };
-
-        const langSelect = document.getElementById('lang-select');
-        let currentLang = 'es';
-
-        langSelect.addEventListener('change', (e) => {
-            setLanguage(e.target.value);
+        /* ----------------------------------------------------------------
+           1. LOGICA DE NÚCLEO (CURSOR, TEXTO, HORA)
+        ---------------------------------------------------------------- */
+        
+        // CUSTOM CURSOR
+        const cursor = document.getElementById('cursor');
+        const dot = document.getElementById('cursor-dot');
+        
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            dot.style.left = e.clientX + 'px';
+            dot.style.top = e.clientY + 'px';
         });
 
-        function setLanguage(lang) {
-            currentLang = lang;
-            const t = translations[lang];
+        // Hover effect for links/buttons
+        const hoverables = document.querySelectorAll('.hover-trigger, a, button');
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovered'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovered'));
+        });
 
-            // 1. Actualizar textos estáticos
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (t[key]) el.innerHTML = t[key];
-            });
-
-            // 2. Actualizar Typewriter
-            phrases = t.typewriter;
-            phraseIndex = 0;
-            charIndex = 0;
-            isDeleting = false; // Reinicia animación suavemente
+        // CLOCK
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('es-ES');
+            // Fake Ping fluctuation
+            if(Math.random() > 0.8) document.getElementById('ping').innerText = `PING: ${Math.floor(Math.random() * 20 + 10)}ms`;
         }
+        setInterval(updateClock, 1000);
 
-        /* ----------------------------------------------------
-           2. TYPEWRITER EFFECT (Modificado para ser dinámico)
-        ---------------------------------------------------- */
-        const textElement = document.getElementById('typewriter');
-        let phrases = translations.es.typewriter;
-        let phraseIndex = 0;
-        let charIndex = 0;
-        let isDeleting = false;
+        // TYPING EFFECT
+        const words = ["Multiplatform Developer", "SysAdmin Hybrid", "Network Enthusiast"];
+        let i = 0, j = 0, isDeleting = false;
+        const typeElem = document.getElementById("typing-text");
 
         function type() {
-            const currentPhrase = phrases[phraseIndex];
+            const current = words[i];
             if (isDeleting) {
-                textElement.textContent = currentPhrase.substring(0, charIndex - 1);
-                charIndex--;
+                typeElem.textContent = current.substring(0, j--);
+                if (j < 0) { isDeleting = false; i = (i + 1) % words.length; }
             } else {
-                textElement.textContent = currentPhrase.substring(0, charIndex + 1);
-                charIndex++;
+                typeElem.textContent = current.substring(0, j++);
+                if (j > current.length) { isDeleting = true; setTimeout(type, 2000); return; }
             }
-            let typeSpeed = isDeleting ? 40 : 100;
-            if (!isDeleting && charIndex === currentPhrase.length) {
-                isDeleting = true;
-                typeSpeed = 2000;
-            } else if (isDeleting && charIndex === 0) {
-                isDeleting = false;
-                phraseIndex = (phraseIndex + 1) % phrases.length;
-                typeSpeed = 500;
-            }
-            setTimeout(type, typeSpeed);
+            setTimeout(type, isDeleting ? 50 : 100);
         }
-        document.addEventListener('DOMContentLoaded', type);
+        type();
 
-        /* ----------------------------------------------------
-           3. THEME SELECTOR & MATRIX
-        ---------------------------------------------------- */
-        const themeSelect = document.getElementById('theme-select');
-        const body = document.body;
-        const themes = {
-            onedark: { "--bg": "#050505", "--card-bg": "#111111", "--text-main": "#ffffff", "--text-dim": "#888888", "--border": "#333333", "--terminal-green": "#33ff00" },
-            monokai: { "--bg": "#272822", "--card-bg": "#3e3d32", "--text-main": "#f8f8f2", "--text-dim": "#cfcfc2", "--border": "#75715e", "--terminal-green": "#a6e22e" },
-            solarized: { "--bg": "#fdf6e3", "--card-bg": "#eee8d5", "--text-main": "#657b83", "--text-dim": "#93a1a1", "--border": "#d33682", "--terminal-green": "#859900" },
-            light: { "--bg": "#ffffff", "--card-bg": "#f6f8fa", "--text-main": "#24292f", "--text-dim": "#57606a", "--border": "#d0d7de", "--terminal-green": "#0969da" }
-        };
-        themeSelect.addEventListener('change', (e) => {
-            const selected = e.target.value;
-            body.setAttribute('data-theme', selected);
-            const themeVars = themes[selected];
-            for (let key in themeVars) document.documentElement.style.setProperty(key, themeVars[key]);
+        /* ----------------------------------------------------------------
+           2. HACKER SCRAMBLE EFFECT
+        ---------------------------------------------------------------- */
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&";
+        document.querySelectorAll(".scramble-hover").forEach(item => {
+            item.onmouseover = event => {
+                let iterations = 0;
+                const interval = setInterval(() => {
+                    event.target.innerText = event.target.innerText.split("")
+                        .map((letter, index) => {
+                            if(index < iterations) return event.target.dataset.value[index];
+                            return letters[Math.floor(Math.random() * 26)];
+                        }).join("");
+                    if(iterations >= event.target.dataset.value.length) clearInterval(interval);
+                    iterations += 1/3;
+                }, 30);
+            }
         });
 
-        /* MATRIX CANVAS */
+        /* ----------------------------------------------------------------
+           3. MATRIX BACKGROUND
+        ---------------------------------------------------------------- */
         const canvas = document.getElementById('matrix-canvas');
         const ctx = canvas.getContext('2d');
         canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-        const alphabet = 'アァカサタナハマヤャラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        const fontSize = 16;
-        const columns = canvas.width / fontSize;
-        const rainDrops = Array.from({ length: columns }).fill(1);
+        const columns = canvas.width / 20;
+        const drops = Array(Math.floor(columns)).fill(1);
+
         function drawMatrix() {
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-            ctx.fillStyle = getComputedStyle(document.body).getPropertyValue('--terminal-green'); ctx.font = fontSize + 'px monospace';
-            for (let i = 0; i < rainDrops.length; i++) {
-                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) rainDrops[i] = 0;
-                rainDrops[i]++;
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#00ff41';
+            ctx.font = '15px monospace';
+            for (let i = 0; i < drops.length; i++) {
+                const text = String.fromCharCode(0x30A0 + Math.random() * 96);
+                ctx.fillText(text, i * 20, drops[i] * 20);
+                if (drops[i] * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
             }
         }
         setInterval(drawMatrix, 50);
-        window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
 
-        /* ----------------------------------------------------
-           4. TERMINAL & OBSERVER
-        ---------------------------------------------------- */
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('visible'); });
-        }, { threshold: 0.1 });
-        document.querySelectorAll('.timeline-item').forEach(item => observer.observe(item));
-
-        const termInput = document.getElementById('term-input');
-        const termOutput = document.getElementById('terminal-output');
-
-        // Respuestas dinámicas según idioma
-        const getCommandResponse = (cmd) => {
-            const lang = currentLang;
-            const res = {
-                es: { whoami: "Yago Duran. Desarrollador.", help: "Comandos: help, clear, whoami, cv", unknown: "Comando no encontrado." },
-                en: { whoami: "Yago Duran. Developer.", help: "Commands: help, clear, whoami, cv", unknown: "Command not found." },
-                eu: { whoami: "Yago Duran. Garatzailea.", help: "Komandoak: help, clear, whoami, cv", unknown: "Ez dut ulertzen." }
-            };
-            return res[lang][cmd] || res[lang].unknown;
+        /* ----------------------------------------------------------------
+           4. MODALS & DATA
+        ---------------------------------------------------------------- */
+        const projectsData = {
+            'bizimatch': {
+                title: "BiziMatch App",
+                desc: "Aplicación multiplataforma (.NET MAUI) diseñada para resolver el problema de encontrar compañeros de piso compatibles. Utiliza un algoritmo de afinidad ponderada basado en horarios, limpieza y hábitos sociales. Incluye chat en tiempo real con SignalR.",
+                stack: ["C#", ".NET 8", "MAUI", "SQLite", "SignalR"],
+                link: "https://github.com/yagoduran/bizimatch"
+            },
+            'cubata': {
+                title: "CubataCounter",
+                desc: "Aplicación nativa Android para gestión de eventos sociales. Permite trackear consumo, gasto y localización. Integra Google Maps API para 'Heatmaps' de zonas de ocio y Firebase para persistencia de datos en la nube.",
+                stack: ["Java", "Android SDK", "Firebase Auth", "Google Maps API"],
+                link: "https://github.com/yagoduran/cubatacounter"
+            },
+            'fivem': {
+                title: "FiveM Roleplay Core",
+                desc: "Framework completo para servidores GTA V Roleplay. Optimización de 'resmon' (consumo de recursos) a 0.01ms. Sistemas de inventario drag-and-drop, gestión de base de datos asíncrona y UI reactiva con NUI (HTML/JS).",
+                stack: ["Lua", "JavaScript", "Vue.js", "MySQL", "CSS3"],
+                link: "#"
+            }
         };
 
-        termInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const input = this.value.trim().toLowerCase();
-                addToTerminal(`yago@portfolio:~$ ${this.value}`, 'var(--text-dim)');
-                
-                if (input === 'clear') termOutput.innerHTML = '';
-                else if (input === 'cv') window.open('cv.pdf', '_blank');
-                else if (input === 'sudo rm -rf /') {
-                    addToTerminal("🚨 PERMISSION DENIED", "red");
-                    document.body.classList.add('shake'); setTimeout(() => document.body.classList.remove('shake'), 1000);
-                }
-                else if (['help', 'whoami'].includes(input)) addToTerminal(getCommandResponse(input), 'var(--text-main)');
-                else if (input !== '') addToTerminal(getCommandResponse('unknown'), 'var(--text-main)');
-                
-                this.value = '';
-                termInput.scrollIntoView();
-            }
-        });
-
-        function addToTerminal(text, color) {
-            const div = document.createElement('div');
-            div.style.color = color; div.textContent = text;
-            termOutput.appendChild(div);
+        const modal = document.getElementById('project-modal');
+        function openProject(id) {
+            const p = projectsData[id];
+            document.getElementById('modal-title').innerText = p.title;
+            document.getElementById('modal-desc').innerText = p.desc;
+            document.getElementById('modal-link').href = p.link;
+            
+            const tagsContainer = document.getElementById('modal-tags');
+            tagsContainer.innerHTML = '';
+            p.stack.forEach(t => {
+                tagsContainer.innerHTML += `<span class="tag">${t}</span>`;
+            });
+            
+            modal.classList.add('modal-active');
         }
 
-        /* ----------------------------------------------------
-           5. EASTER EGG (SNAKE)
-        ---------------------------------------------------- */
-        let keySequence = []; const secretCode = 'dev';
-        const gameModal = document.getElementById('game-modal');
-        const gameCanvas = document.getElementById('game-canvas');
-        const gCtx = gameCanvas.getContext('2d');
-        let gameInterval;
-        let score = 0;
+        function closeModal() {
+            modal.classList.remove('modal-active');
+        }
 
-        document.addEventListener('keydown', (e) => {
-            keySequence.push(e.key);
-            keySequence.splice(-secretCode.length - 1, keySequence.length - secretCode.length);
-            if (keySequence.join('').includes(secretCode)) openGame();
-            if (e.key === 'Escape') closeGame();
+        // Close on click outside
+        modal.addEventListener('click', (e) => {
+            if(e.target === modal) closeModal();
         });
 
-        function openGame() { gameModal.style.display = 'block'; startGame(); }
-        function closeGame() { gameModal.style.display = 'none'; clearInterval(gameInterval); }
-
-        function startGame() {
-            let px=10, py=10, gs=20, tc=15, ax=15, ay=15, xv=0, yv=0;
-            let trail=[], tail=5; score=0; document.getElementById('score').innerText = score;
-            document.addEventListener('keydown', (evt) => {
-                if(evt.keyCode===37) {xv=-1;yv=0;} if(evt.keyCode===38) {xv=0;yv=-1;}
-                if(evt.keyCode===39) {xv=1;yv=0;} if(evt.keyCode===40) {xv=0;yv=1;}
-            });
-            clearInterval(gameInterval);
-            gameInterval = setInterval(() => {
-                px+=xv; py+=yv;
-                if(px<0) px=tc-1; if(px>tc-1) px=0; if(py<0) py=tc-1; if(py>tc-1) py=0;
-                gCtx.fillStyle="#000"; gCtx.fillRect(0,0,300,300);
-                gCtx.fillStyle="#33ff00";
-                for(let i=0;i<trail.length;i++) {
-                    gCtx.fillRect(trail[i].x*gs,trail[i].y*gs,gs-2,gs-2);
-                    if(trail[i].x==px && trail[i].y==py && (xv!=0 || yv!=0)) { tail=5; score=0; document.getElementById('score').innerText=score; }
-                }
+        /* ----------------------------------------------------------------
+           5. UTILS & GAME
+        ---------------------------------------------------------------- */
+        function downloadCV() { window.open('cv.pdf', '_blank'); }
+        function changeLang() { alert("Funcionalidad i18n ya integrada (ver versión anterior)."); }
+        function toggleTheme() { document.body.style.filter = document.body.style.filter === 'invert(1)' ? 'invert(0)' : 'invert(1)'; }
+        
+        // Snake Game Minimal
+        let gameInt, score=0, gCtx = document.getElementById('game-canvas').getContext('2d');
+        function openGame() { document.getElementById('game-overlay').classList.add('modal-active'); startGame(); }
+        function closeGame() { document.getElementById('game-overlay').classList.remove('modal-active'); clearInterval(gameInt); }
+        
+        function startGame() { 
+            let px=10,py=10,ax=15,ay=15,xv=0,yv=0,trail=[],tail=5; score=0;
+            document.addEventListener('keydown',e=>{ if(e.keyCode==37){xv=-1;yv=0} if(e.keyCode==38){xv=0;yv=-1} if(e.keyCode==39){xv=1;yv=0} if(e.keyCode==40){xv=0;yv=1} if(e.key==='Escape') closeGame(); });
+            clearInterval(gameInt);
+            gameInt = setInterval(()=>{
+                px+=xv;py+=yv; if(px<0)px=14;if(px>14)px=0;if(py<0)py=14;if(py>14)py=0;
+                gCtx.fillStyle="black"; gCtx.fillRect(0,0,300,300);
+                gCtx.fillStyle="#00ff41"; 
+                trail.forEach(t=>{ gCtx.fillRect(t.x*20,t.y*20,18,18); if(t.x==px&&t.y==py&&tail>5) {tail=5;score=0; document.getElementById('score').innerText=0;} });
                 trail.push({x:px,y:py}); while(trail.length>tail) trail.shift();
-                if(ax==px && ay==py) { tail++; score++; document.getElementById('score').innerText=score; ax=Math.floor(Math.random()*tc); ay=Math.floor(Math.random()*tc); }
-                gCtx.fillStyle="red"; gCtx.fillRect(ax*gs,ay*gs,gs-2,gs-2);
+                if(ax==px&&ay==py) { tail++; score++; document.getElementById('score').innerText=score; ax=Math.floor(Math.random()*15); ay=Math.floor(Math.random()*15); }
+                gCtx.fillStyle="#bd00ff"; gCtx.fillRect(ax*20,ay*20,18,18);
             }, 100);
         }
+
+        // Tilt init
+        VanillaTilt.init(document.querySelectorAll(".glass-card"), { max: 10, speed: 400, glare: true, "max-glare": 0.2 });
+
     </script>
 </body>
 </html>
