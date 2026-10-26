@@ -68,22 +68,39 @@
           <h2 data-i18n="about.title">Código con base de sistemas.</h2>
           <p class="sub" data-i18n="about.sub">Uno programación, datos y soporte técnico para entender el problema completo, no solo una parte del código.</p>
         </div>
-        <div class="grid g3">
-          <article class="card reveal">
-            <div class="ico"><i class="fa-solid fa-code"></i></div>
-            <h3 data-i18n="about.c1.t">Construir soluciones</h3>
-            <p data-i18n="about.c1.p">Creo aplicaciones y funcionalidades con lógica clara, pensando en que sean mantenibles y resuelvan una necesidad real.</p>
-          </article>
-          <article class="card reveal">
-            <div class="ico"><i class="fa-solid fa-database"></i></div>
-            <h3 data-i18n="about.c2.t">Datos</h3>
-            <p data-i18n="about.c2.p">Trabajo con SQL para consultar, extraer y preparar datos que ayuden a analizar procesos o generar informes.</p>
-          </article>
-          <article class="card reveal">
-            <div class="ico"><i class="fa-solid fa-network-wired"></i></div>
-            <h3 data-i18n="about.c3.t">Sistemas y soporte</h3>
-            <p data-i18n="about.c3.p">Entiendo dónde se usa el software: equipos, usuarios, redes, incidencias, instalación y mantenimiento.</p>
-          </article>
+        <div class="venn-wrap reveal">
+          <svg class="venn" viewBox="0 0 420 380" role="img" aria-label="Diagrama: código, datos y sistemas se unen en el centro">
+            <defs>
+              <filter id="vglow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+            </defs>
+            <g class="orbit"><circle cx="210" cy="190" r="170" fill="none" stroke="rgba(124,58,237,.35)" stroke-dasharray="4 10"/></g>
+            <g class="v v0" data-k="0" tabindex="0" role="button" aria-label="Código"><circle cx="158" cy="150" r="96"/><text x="116" y="122" data-i18n="about.l1">CÓDIGO</text></g>
+            <g class="v v1" data-k="1" tabindex="0" role="button" aria-label="Datos"><circle cx="262" cy="150" r="96"/><text x="276" y="122" data-i18n="about.l2">DATOS</text></g>
+            <g class="v v2" data-k="2" tabindex="0" role="button" aria-label="Sistemas"><circle cx="210" cy="238" r="96"/><text x="210" y="300" text-anchor="middle" data-i18n="about.l3">SISTEMAS</text></g>
+            <g class="core"><circle cx="210" cy="177" r="6"/><circle class="ping" cx="210" cy="177" r="6"/><text x="210" y="205" text-anchor="middle" data-i18n="about.core">YO</text></g>
+          </svg>
+          <div class="venn-info" aria-live="polite">
+            <article class="vi active" data-k="3">
+              <span class="ico"><i class="fa-solid fa-crosshairs"></i></span>
+              <h3 data-i18n="about.c0.t">Donde se juntan</h3>
+              <p data-i18n="about.c0.p">En el centro estoy yo: uniendo las tres piezas para entender el problema completo y no solo una parte del código. Toca cada círculo para ver qué aporta.</p>
+            </article>
+            <article class="vi" data-k="0">
+              <span class="ico"><i class="fa-solid fa-code"></i></span>
+              <h3 data-i18n="about.c1.t">Construir soluciones</h3>
+              <p data-i18n="about.c1.p">Creo aplicaciones y funcionalidades con lógica clara, pensando en que sean mantenibles y resuelvan una necesidad real.</p>
+            </article>
+            <article class="vi" data-k="1">
+              <span class="ico"><i class="fa-solid fa-database"></i></span>
+              <h3 data-i18n="about.c2.t">Datos</h3>
+              <p data-i18n="about.c2.p">Trabajo con SQL para consultar, extraer y preparar datos que ayuden a analizar procesos o generar informes.</p>
+            </article>
+            <article class="vi" data-k="2">
+              <span class="ico"><i class="fa-solid fa-network-wired"></i></span>
+              <h3 data-i18n="about.c3.t">Sistemas y soporte</h3>
+              <p data-i18n="about.c3.p">Entiendo dónde se usa el software: equipos, usuarios, redes, incidencias, instalación y mantenimiento.</p>
+            </article>
+          </div>
         </div>
       </div>
     </section>

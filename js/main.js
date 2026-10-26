@@ -56,6 +56,15 @@
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .12 });
   $$('.reveal').forEach((el, i) => { el.style.transitionDelay = `${(i % 3) * 90}ms`; io.observe(el); });
 
+  // Diagrama de Venn: al pasar o tocar un círculo se cambia el texto
+  const vs = $$('.venn .v'), vis = $$('.vi');
+  const show = k => { vis.forEach(v => v.classList.toggle('active', v.dataset.k === String(k))); vs.forEach(v => v.classList.toggle('on', v.dataset.k === String(k))); };
+  vs.forEach(v => {
+    ['mouseenter', 'focus', 'click'].forEach(ev => v.addEventListener(ev, () => show(v.dataset.k)));
+    v.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); show(v.dataset.k); } });
+  });
+  $('.venn').addEventListener('mouseleave', () => show(3));
+
   // Tarjetas: inclinación 3D y foco de luz
   if (!reduce && matchMedia('(hover: hover)').matches) {
     $$('.card').forEach(c => {

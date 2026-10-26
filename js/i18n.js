@@ -7,6 +7,8 @@ window.I18N_EN = {
   'hero.cta1': 'See projects', 'hero.cta2': 'Contact me',
   'about.kicker': 'About me', 'about.title': 'Code with a systems foundation.',
   'about.sub': 'I connect programming, data and technical support to understand the whole problem, not just a part of the code.',
+  'about.l1': 'CODE', 'about.l2': 'DATA', 'about.l3': 'SYSTEMS', 'about.core': 'ME',
+  'about.c0.t': 'Where they meet', 'about.c0.p': 'In the middle is me: joining the three pieces to understand the whole problem, not just a part of the code. Tap each circle to see what it adds.',
   'about.c1.t': 'Building solutions', 'about.c1.p': 'I build apps and features with clear logic, thinking about maintainability and about the real need behind them.',
   'about.c2.t': 'Data', 'about.c2.p': 'I work with SQL to query, extract and prepare data that helps analyse processes or generate reports.',
   'about.c3.t': 'Systems and support', 'about.c3.p': 'I understand where software runs: machines, users, networks, incidents, installation and maintenance.',
