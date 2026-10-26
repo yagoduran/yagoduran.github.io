@@ -17,7 +17,7 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; overflow-x: clip; }
 body {
   background: radial-gradient(1200px 700px at 80% -10%, rgba(124, 58, 237, .25), transparent 60%),
               radial-gradient(900px 600px at -10% 30%, rgba(0, 240, 255, .12), transparent 60%),
@@ -37,7 +37,8 @@ body::after {
   background: repeating-linear-gradient(0deg, rgba(255, 255, 255, .025) 0 1px, transparent 1px 3px);
   mix-blend-mode: overlay;
 }
-main, header, footer { position: relative; z-index: 2; }
+main, footer { position: relative; z-index: 2; }
+header { position: relative; z-index: 20; }
 
 .progress { position: fixed; top: 0; left: 0; height: 3px; width: 100%; z-index: 100; transform: scaleX(0); transform-origin: left;
   background: linear-gradient(90deg, var(--cyan), var(--magenta)); box-shadow: 0 0 12px var(--magenta); }
